@@ -43,15 +43,22 @@ int main() {
 	size_t sizeC = 40 * 60 * sizeof(int);
 	cudaMalloc((void **)&dev_C, sizeC);
 
+	//Move A and B to device memory
+	//cudaMemcpy(dev_A, &A, sizeA, cudaMemcpyHostToDevice);
+	//cudaMemcpy(dev_B, &B, sizeB, cudaMemcpyHostToDevice);
 
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	cublasStatus_t status;
+	cublasOperation_t transa, transb;
+	int m = 40, n = 60, k = 70;
+	const float alpha = 1.0f;
 
-	/*Matrix d_A;
-d_A.width = d_A.stride = A.width;
-d_A.height = A.height;
-size_t size = A.width * A.height * sizeof(float);
-cudaError_t err = cudaMalloc(&d_A.elements, size);
-printf("CUDA malloc A: %s\n",cudaGetErrorString(err));
-cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);*/
+	status = cublasSgemm(handle, transa, transb, m, n, k, &alpha, , );
+
+		//cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, 
+		//const float *alpha, const float *A, int lda, const float *B, int ldb, const float *beta, float *C, int ldc
+
 
 	return 0;
 }
