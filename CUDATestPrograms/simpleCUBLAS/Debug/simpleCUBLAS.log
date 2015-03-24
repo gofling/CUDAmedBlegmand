@@ -1,0 +1,31 @@
+﻿Build started 24-03-2015 12:59:16.
+     1>Project "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS\simpleCUBLAS.vcxproj" on node 2 (Build target(s)).
+     1>AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS\scMain.cu" 
+       CudaBuild:
+         Compiling CUDA source file scMain.cu...
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmpcb7d24636531406c87fb9e012ef8d102.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\scMain.cu.obj "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS\scMain.cu"
+         
+         C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\scMain.cu.obj "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS\scMain.cu" 
+     1>C:/Users/Gideon/Documents/Visual Studio 2013/Projects/CUDATestPrograms/simpleCUBLAS/scMain.cu(31): warning : variable "C" was declared but never referenced
+     1>C:/Users/Gideon/Documents/Visual Studio 2013/Projects/CUDATestPrograms/simpleCUBLAS/scMain.cu(31): warning : variable "C" was declared but never referenced
+         scMain.cu
+     1>C:/Users/Gideon/Documents/Visual Studio 2013/Projects/CUDATestPrograms/simpleCUBLAS/scMain.cu(31): warning C4101: 'C' : unreferenced local variable
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\simpleCUBLAS.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\simpleCUBLAS.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\simpleCUBLAS.lib" /MACHINE:X86 Debug\kernel.cu.obj
+         Debug\scMain.cu.obj
+         simpleCUBLAS.vcxproj -> C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\simpleCUBLAS.exe
+       PostBuildEvent:
+         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\"
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\"
+         :VCEnd
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\Debug\"
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart32_70.dll
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart64_70.dll
+                 2 file(s) copied.
+     1>Done Building Project "C:\Users\Gideon\Documents\Visual Studio 2013\Projects\CUDATestPrograms\simpleCUBLAS\simpleCUBLAS.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.44

@@ -1,0 +1,23 @@
+﻿Build started 24-03-2015 08:39:11.
+     1>Project "C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication\MatrixMultiplication.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (MatrixMultiplication.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c "C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication\Main.cu" 
+       CudaBuild:
+         Compiling CUDA source file Main.cu...
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp362beadbe7ea4246b25a17ecac956401.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\Main.cu.obj "C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication\Main.cu"
+         
+         C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\Main.cu.obj "C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication\Main.cu" 
+         Main.cu
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\Debug\simpleAddition.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\Debug\simpleAddition.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\Debug\simpleAddition.lib" /MACHINE:X86 Debug\kernel.cu.obj
+         Debug\Main.cu.obj
+     1>Main.cu.obj : error LNK2005: "void __cdecl add(int *,int *,int *,int *,int *,int *)" (?add@@YAXPAH00000@Z) already defined in kernel.cu.obj
+     1>Main.cu.obj : error LNK2005: "void __cdecl __device_stub__Z3addPiS_S_S_S_S_(int *,int *,int *,int *,int *,int *)" (?__device_stub__Z3addPiS_S_S_S_S_@@YAXPAH00000@Z) already defined in kernel.cu.obj
+     1>C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\Debug\simpleAddition.exe : fatal error LNK1169: one or more multiply defined symbols found
+     1>Done Building Project "C:\Users\Gideon\documents\visual studio 2013\Projects\CUDATestPrograms\MatrixMultiplication\MatrixMultiplication.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:05.31
