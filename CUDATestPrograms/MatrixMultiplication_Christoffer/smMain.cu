@@ -1,7 +1,7 @@
 #include <cstdlib>
-#include <cuda_runtime.h>
-#include <curand.h>
-#include <cublas_v2.h>
+#include "cuda_runtime.h"
+#include "curand.h"
+#include "cublas_v2.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
