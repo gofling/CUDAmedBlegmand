@@ -20,7 +20,7 @@ void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 }
 
 void GPU_blas_mmul(const float *A, const float *B, float *C, const int m, const int k, const int n) {
-	int lda = m, ldb = k, ldc = n;
+	int lda = m, ldb = k, ldc = m;
 	const float alf = 0;
 	const float bet = 1;
 	const float *alpha = &alf;
