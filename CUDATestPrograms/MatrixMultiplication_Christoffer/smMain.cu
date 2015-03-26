@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//To run wite "nvcc mmul_1.cu -lcublas -lcurand -o mmul_1"
-
 //Random filling og arrays on GPU
 void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 
@@ -82,30 +80,41 @@ int main() {
 	// Square Arrays
 	nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = 10;
 
-	// Allocate memory on CPU
+	// Allocate memory on Host
 	float * h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
 	float * h_B = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
 	float * h_C = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
 
-	// Allocate memory on GPU
+	// Allocate memory on Device
 	float *d_A, *d_B, *d_C;
 	printf("GPU memory allocation times\n");
+	
+		// Memory allocation for Matrix A
 	clock_t start = clock(), diff;
-	cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float));
+	if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
+		printf("Memory was not allocated for matrix A");
+		return EXIT_FAILURE;
+	}
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
-
+		// Memory allocation for Matrix B
 	start = clock(), diff;
-	cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float));
+	if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
+		printf("Memory was not allocated for matrix B");
+		return EXIT_FAILURE;
+	}	
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
-
+		// Memory allocation for Matrix C
 	start = clock(), diff;
-	cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float));
+	if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
+		printf("Memory was not allocated for matrix C");
+		return EXIT_FAILURE;
+	}
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
