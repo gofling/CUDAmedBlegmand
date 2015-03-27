@@ -2,7 +2,7 @@
 #include "device_launch_parameters.h"
 
 #include <stdio.h>
-
+//addittion prog
 const int N = 16;
 const int blocksize = 16;
 
