@@ -74,6 +74,25 @@ void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 	printf("\n");
 }
 
+void output_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
+
+	FILE *f = fopen("./Output.txt", "w");
+	if (f == NULL) {
+		printf("Yo dude! Does not load da file!");
+		exit(1);
+	}
+	for (int i = 0; i < nr_rows_A; ++i){
+		for (int j = 0; j < nr_cols_A; ++j){
+			fprintf(f, "%f ", A[j * nr_rows_A + i]);
+		}
+
+		fprintf(f, "\n");
+	}
+	fprintf(f, "\n\n");
+	
+	fclose(f);
+}
+
 int main() {
 
 	// 3 Arrays on CPU
@@ -89,7 +108,7 @@ int main() {
 
 	// Allocate memory on Device
 	float *d_A, *d_B, *d_C;
-	printf("GPU memory allocation times\n");
+	//printf("GPU memory allocation times\n");
 
 	// Memory allocation for Matrix A
 	clock_t start = clock(), diff;
@@ -99,7 +118,7 @@ int main() {
 	}
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Memory allocation for Matrix B
 	start = clock(), diff;
@@ -109,7 +128,7 @@ int main() {
 	}
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Memory allocation for Matrix C
 	start = clock(), diff;
@@ -119,7 +138,7 @@ int main() {
 	}
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 
 	// Fill the arrays A and B on GPU with random numbers
@@ -134,36 +153,40 @@ int main() {
 	}
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("Move random filled arrays from GPU to CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("Move random filled arrays from GPU to CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	//printf("A = \n");
 	//print_matrix(h_A, nrRowsA, nrColsA);
 	//printf("B = \n");
 	//print_matrix(h_B, nrRowsB, nrColsB);
 
-	// Multiply A and B on GPU
+	// Multiply A and B on device
 	start = clock(), diff;
 	gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Copy (and print) the result on host memory
+	start = clock(), diff;
+	cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
+	diff = clock() - start;
+	msec = diff * 1000 / CLOCKS_PER_SEC;
+	//printf("Copy result amtrix from gpu to cpu time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+	//printf("GPU C = \n");
+	//print_matrix(h_C, nrRowsC, nrColsC);
+
+	// Multiply A and B on the host
 	//start = clock(), diff;
-	//cpu_blas_mmul(nrRowsA, h_A, h_B, h_C);
+	cpu_blas_mmul(nrRowsA, h_A, h_B, h_C);
 	//diff = clock() - start;
 	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 	//printf("CPU C = \n");
 	//print_matrix(h_C, nrRowsC, nrColsC);
 
-	start = clock(), diff;
-	cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
-	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("Copy result amtrix from gpu to cpu time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-	//printf("GPU C = \n");
-	//print_matrix(h_C, nrRowsC, nrColsC);
+	//print_matrix(h_B, nrRowsB, nrColsB);
+	output_matrix(h_C, nrRowsC, nrColsC);
 
 	//Free GPU memory
 	cudaFree(d_A);
