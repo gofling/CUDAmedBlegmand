@@ -1,19 +1,21 @@
-﻿Build started 26-03-2015 13:35:10.
+﻿Build started 27-03-2015 11:34:29.
      1>Project "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu 
        CudaBuild:
          Compiling CUDA source file smMain.cu...
-         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp06f165bab9ca4972ab7b4725ac83276a.cmd"
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp384e02310cd249e8b18135e53cab3e26.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu"
          
          C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu" 
-     1>C:/Users/Gideon/Documents/GitHub/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(42): warning : function "cpu_blas_mmul" was declared but never referenced
-     1>C:/Users/Gideon/Documents/GitHub/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(42): warning : function "cpu_blas_mmul" was declared but never referenced
+     1>C:/Users/Gideon/Documents/GitHub/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(40): warning : function "cpu_blas_mmul" was declared but never referenced
+     1>C:/Users/Gideon/Documents/GitHub/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(40): warning : function "cpu_blas_mmul" was declared but never referenced
          smMain.cu
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe" /INCREMENTAL /NOLOGO /LIBPATH:"%C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" cublas.lib curand.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.lib" /MACHINE:X64 x64\Debug\kernel.cu.obj
          x64\Debug\smMain.cu.obj
+         LINK : C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe not found or not built by the last incremental link; performing full link
+     1>kernel.cu.obj : warning LNK4099: PDB 'vc120.pdb' was not found with 'kernel.cu.obj' or at 'C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\vc120.pdb'; linking object as if no debug info
          MatrixMultiplication_Christoffer.vcxproj -> C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe
        PostBuildEvent:
          echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\"
@@ -27,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:08.70
+Time Elapsed 00:00:07.40

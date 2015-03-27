@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Random filling og arrays on GPU
+//Random filling og arrays on device
 void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 
 	curandGenerator_t prng;
@@ -16,7 +16,8 @@ void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 
 	curandGenerateUniform(prng, A, nrRowsA * nrColsA);
 }
-// Function that Multiplies matrices on the GPU 
+
+// Function that multiplies matrices on the device 
 void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const int k, const int n) {
 	int lda = m, ldb = k, ldc = m;
 	const float alf = 1;
@@ -37,6 +38,7 @@ void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const 
 	cublasDestroy(handle);
 }
 
+// Function that multiplies matrices on the host
 static void cpu_blas_mmul(int n, const float *A, const float *B, float *C)
 {
 	const float alpha = 1.0f, beta = 0.0f;
@@ -106,7 +108,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 	diff = clock() - start;
-	int msec = diff * 1000 / CLOCKS_PER_SEC;
+	msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Memory allocation for Matrix C
@@ -116,7 +118,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 	diff = clock() - start;
-	int msec = diff * 1000 / CLOCKS_PER_SEC;
+	msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 
