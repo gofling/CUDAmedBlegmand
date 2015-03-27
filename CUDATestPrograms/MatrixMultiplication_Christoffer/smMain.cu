@@ -16,7 +16,7 @@ void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 
 	curandGenerateUniform(prng, A, nrRowsA * nrColsA);
 }
-	// Function that Multiplies matrices on the GPU 
+// Function that Multiplies matrices on the GPU 
 void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const int k, const int n) {
 	int lda = m, ldb = k, ldc = m;
 	const float alf = 1;
@@ -67,7 +67,7 @@ void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 			printf("%f ", A[j * nr_rows_A + i]);
 		}
 
-			printf("\n");
+		printf("\n");
 	}
 	printf("\n");
 }
@@ -88,8 +88,8 @@ int main() {
 	// Allocate memory on Device
 	float *d_A, *d_B, *d_C;
 	printf("GPU memory allocation times\n");
-	
-		// Memory allocation for Matrix A
+
+	// Memory allocation for Matrix A
 	clock_t start = clock(), diff;
 	if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix A");
@@ -99,17 +99,17 @@ int main() {
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
-		// Memory allocation for Matrix B
+	// Memory allocation for Matrix B
 	start = clock(), diff;
 	if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix B");
 		return EXIT_FAILURE;
-	}	
+	}
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
-		// Memory allocation for Matrix C
+	// Memory allocation for Matrix C
 	start = clock(), diff;
 	if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix C");
@@ -154,7 +154,7 @@ int main() {
 	//printf("CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 	//printf("CPU C = \n");
 	//print_matrix(h_C, nrRowsC, nrColsC);
-	
+
 	start = clock(), diff;
 	cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
 	diff = clock() - start;
