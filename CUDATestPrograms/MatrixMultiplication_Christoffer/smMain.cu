@@ -111,48 +111,48 @@ int main() {
 	//printf("GPU memory allocation times\n");
 
 	// Memory allocation for Matrix A
-	clock_t start = clock(), diff;
+	/*clock_t start = clock(), diff;
 	if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix A");
 		return EXIT_FAILURE;
 	}
 	diff = clock() - start;
-	int msec = diff * 1000 / CLOCKS_PER_SEC;
+	int msec = diff * 1000 / CLOCKS_PER_SEC;*/
 	//printf("A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Memory allocation for Matrix B
-	start = clock(), diff;
+	/*start = clock(), diff;
 	if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix B");
 		return EXIT_FAILURE;
 	}
 	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
+	msec = diff * 1000 / CLOCKS_PER_SEC;*/
 	//printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Memory allocation for Matrix C
-	start = clock(), diff;
+	/*start = clock(), diff;
 	if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
 		printf("Memory was not allocated for matrix C");
 		return EXIT_FAILURE;
 	}
 	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
+	msec = diff * 1000 / CLOCKS_PER_SEC;*/
 	//printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 
 	// Fill the arrays A and B on GPU with random numbers
-	GPU_fill_rand(d_A, nrRowsA, nrColsA);
-	GPU_fill_rand(d_B, nrRowsB, nrColsB);
+	//GPU_fill_rand(d_A, nrRowsA, nrColsA);
+	//GPU_fill_rand(d_B, nrRowsB, nrColsB);
 
 	// Optionally we can copy the data back on CPU and print the arrays
-	start = clock(), diff;
-	if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
+	//start = clock(), diff;
+	/*if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
 		printf("Copying matrice A or B failed.\n");
 		return EXIT_FAILURE;
-	}
-	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
+	}*/
+	//diff = clock() - start;
+	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("Move random filled arrays from GPU to CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	//printf("A = \n");
@@ -161,17 +161,17 @@ int main() {
 	//print_matrix(h_B, nrRowsB, nrColsB);
 
 	// Multiply A and B on device
-	start = clock(), diff;
-	gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
-	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
+	//start = clock(), diff;
+	//gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
+	//diff = clock() - start;
+	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Copy (and print) the result on host memory
-	start = clock(), diff;
-	cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
-	diff = clock() - start;
-	msec = diff * 1000 / CLOCKS_PER_SEC;
+	//start = clock(), diff;
+	//cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
+	//diff = clock() - start;
+	////msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("Copy result amtrix from gpu to cpu time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 	//printf("GPU C = \n");
 	//print_matrix(h_C, nrRowsC, nrColsC);
@@ -189,15 +189,16 @@ int main() {
 	output_matrix(h_C, nrRowsC, nrColsC);
 
 	//Free GPU memory
-	cudaFree(d_A);
+	/*cudaFree(d_A);
 	cudaFree(d_B);
-	cudaFree(d_C);
+	cudaFree(d_C);*/
 
 	//Free CPU memory
 	free(h_A);
 	free(h_B);
 	free(h_C);
 
+	printf("Done John");
 	int q = 0;
 	scanf("%d", q);
 
