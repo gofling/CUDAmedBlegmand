@@ -169,10 +169,10 @@ int main() {
 
 	// Optionally we can copy the data back on CPU and print the arrays
 	//start = clock(), diff;
-	if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
+	/*if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
 		printf("Copying matrice A or B failed.\n");
 		return EXIT_FAILURE;
-	}
+	}*/
 	//diff = clock() - start;
 	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("Move random filled arrays from GPU to CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
@@ -184,15 +184,15 @@ int main() {
 
 	// Multiply A and B on device
 	//start = clock(), diff;
-	gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
+	//gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
 	//diff = clock() - start;
 	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	// Copy (and print) the result on host memory
 	//start = clock(), diff;
-	cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
-	output_matrix(h_C, nrRowsC, nrColsC);
+	//cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
+	//output_matrix(h_C, nrRowsC, nrColsC);
 	//diff = clock() - start;
 	////msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("Copy result amtrix from gpu to cpu time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
@@ -201,7 +201,7 @@ int main() {
 
 	// Multiply A and B on the host
 	//start = clock(), diff;
-	cpu_blas_mmul(nrRowsA, h_A, h_B, h_D);
+	//cpu_blas_mmul(nrRowsA, h_A, h_B, h_D);
 	//diff = clock() - start;
 	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
@@ -220,9 +220,9 @@ int main() {
 	free(h_B);
 	free(h_C);
 
-	printf("Done John");
-	int q = 0;
-	scanf("%d", q);
+	//printf("Done John");
+	//int q = 0;
+	//scanf("%d", q);
 
 	return 0;
 }
