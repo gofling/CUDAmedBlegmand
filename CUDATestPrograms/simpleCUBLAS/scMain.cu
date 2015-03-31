@@ -106,24 +106,28 @@ int main() {
 	// Allocate memory on Host
 	clock_t start = clock(), diff;
 	float * h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
+	if (h_A == NULL) { printf("h_A was not allocated"); }
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("CPU: A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	start = clock(), diff;
 	float * h_B = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
+	if (h_B == NULL) { printf("h_B was not allocated"); }
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("CPU: B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	start = clock(), diff;
 	float * h_C = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
+	if (h_A == NULL) { printf("h_C was not allocated"); }
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("CPU: C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
 
 	start = clock(), diff;
 	float * h_D = (float*)malloc(nrRowsD * nrColsD * sizeof(float));
+	if (h_A == NULL) { printf("h_D was not allocated"); }
 	diff = clock() - start;
 	msec = diff * 1000 / CLOCKS_PER_SEC;
 	printf("CPU: D allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
