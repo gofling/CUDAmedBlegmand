@@ -79,13 +79,14 @@ void fprint_CPU_Allocation_Times(int matrixSize, int iterationnr, int msec, char
 	FILE *f = fopen(fileName, "a");
 
 	if (f == NULL) {
-		printf("an erro occured opening CPUallocationTime.txt");
+		printf("an error occured opening CPUallocationTime.txt");
+		getchar();
 		exit(1);
 	}
 	fprintf(f, "iteration-%d-", iterationnr);
 	fprintf(f, "matrixSize-%d-", matrixSize);
-	fprintf(f, "matrixName-%s-time-%d,%d\n", currentMatrix, msec / 1000, msec % 1000);
-	Sleep(2);
+	fprintf(f, "matrixName-%s-time-%d%d\n", currentMatrix, msec / 1000, msec % 1000);
+	//Sleep(2);
 
 	fclose(f);
 }
@@ -94,13 +95,14 @@ void fprint_GPU_Allocation_Times(int matrixSize, int iterationnr, int msec, char
 	FILE *f = fopen(fileName, "a");
 
 	if (f == NULL) {
-		printf("an erro occured opening GPUallocationTime.txt");
+		printf("an error occured opening GPUallocationTime.txt");
+		getchar();
 		exit(1);
 	}
 	fprintf(f, "iteration-%d-", iterationnr);
 	fprintf(f, "matrixSize-%d-", matrixSize);
-	fprintf(f, "matrixName-%s-time-%d,%d\n", currentMatrix, msec / 1000, msec % 1000);
-	Sleep(2);
+	fprintf(f, "matrixName-%s-time-%d%d\n", currentMatrix, msec / 1000, msec % 1000);
+	//Sleep(2);
 
 	fclose(f);
 }
@@ -110,6 +112,7 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 	FILE *f = fopen(fileName, "a");
 	if (f == NULL) {
 		printf("Yo dude! Does not load da file!");
+		getchar();
 		exit(1);
 	}
 
@@ -126,130 +129,85 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 }
 
 int main() {
-
-	// 3 Arrays on CPU
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC, nrRowsD, nrColsD;
-	int matrixStartSize = 500, GPUalloc = 50, CPUalloc = 500, k = 1, j = 1;
-	//nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = nrRowsD = nrColsD = sizeAsInput;
-	
-	// Square Arrays
-	//printf("Square matrices of size: ");
-	//scanf("%d", &sizeAsInput);
+	int matrixStartSize = 500, GPUalloc = 50, CPUalloc = 500;
 	int actualMatrixSize = matrixStartSize;
-	while (actualMatrixSize <= 13000) {
-		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = nrRowsD = nrColsD = actualMatrixSize;
 
-		while (k <= CPUalloc) {
-			// Allocate memory on Host
+	// Go through matrices from size 500 to size 13000
+	while (actualMatrixSize <= 13000) {
+		printf("actualMatrixSize: %d\n",actualMatrixSize);
+
+		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = actualMatrixSize;
+
+		// Allocate memory on Host
+		for (int k = 0; k < CPUalloc; k++) {
 			clock_t start = clock(), diff;
 			float * h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
-			if (h_A == NULL) { printf("h_A was not allocated"); return EXIT_FAILURE; }
+			if (h_A == NULL) { printf("CPU: h_A was not allocated: %d",k); return EXIT_FAILURE; }
 			diff = clock() - start;
 			int msec = diff * 1000 / CLOCKS_PER_SEC;
-			//fprint_Allocation_Times(sizeAsInput, msec, "CPU:A", "./allocationTimes.txt");
-				fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:A", "./CPUallocationTimes.txt");
-				Sleep(2);
-				//printf("CPU: A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+			fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:A", "./CPUallocationTimes.txt");
+			free(h_A);
 
 			start = clock(), diff;
 			float * h_B = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
-			if (h_B == NULL) { printf("h_B was not allocated"); return EXIT_FAILURE; }
+			if (h_B == NULL) { printf("CPU: h_B was not allocated: %d", k); return EXIT_FAILURE; }
 			diff = clock() - start;
 			msec = diff * 1000 / CLOCKS_PER_SEC;
-			//fprint_Allocation_Times(sizeAsInput, msec, "CPU:B", "./allocationTimes.txt");
-				fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:B", "./CPUallocationTimes.txt");
-				Sleep(2);
-				//printf("CPU: B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-			start = clock(), diff;
-			float * h_C = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
-			if (h_A == NULL) { printf("h_C was not allocated"); return EXIT_FAILURE; }
-			diff = clock() - start;
-			msec = diff * 1000 / CLOCKS_PER_SEC;
-			//fprint_Allocation_Times(sizeAsInput, msec, "CPU:C", "./allocationTimes.txt");
-				fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:C", "./CPUallocationTimes.txt");
-				Sleep(2);
-				//printf("CPU: C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-			start = clock(), diff;
-			float * h_D = (float*)malloc(nrRowsD * nrColsD * sizeof(float));
-			if (h_A == NULL) { printf("h_D was not allocated"); return EXIT_FAILURE; }
-			diff = clock() - start;
-			msec = diff * 1000 / CLOCKS_PER_SEC;
-			//fprint_Allocation_Times(sizeAsInput, msec, "CPU:D", "./allocationTimes.txt");
-				fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:D", "./CPUallocationTimes.txt");
-				Sleep(2);
-				//printf("CPU: D allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-			free(h_A);
+			fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:B", "./CPUallocationTimes.txt");
 			free(h_B);
+
+			start = clock(), diff;
+			float * h_C = (float*)malloc(nrRowsC * nrColsC * sizeof(float));
+			if (h_A == NULL) { printf("CPU: h_C was not allocated: %d", k); return EXIT_FAILURE; }
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_CPU_Allocation_Times(actualMatrixSize, k, msec, "CPU:C", "./CPUallocationTimes.txt");
 			free(h_C);
-
-			//printf("%d", k);
-			k++;
 		}
-		k = 0;
 
-		Sleep(2);
 		fprint_CPU_Allocation_Times(actualMatrixSize, CPUalloc, NULL, NULL, "./CPUallocationTimes.txt");
-		Sleep(2);
 		
-		if (CPUalloc > 50){
-			CPUalloc -= 150;
-		}
+		if (CPUalloc > 50){ CPUalloc -= 150; }
 
-		while (j <= GPUalloc) {
-			// Allocate memory on Device
+		// Allocate memory on Device
+		for (int j = 0; j < GPUalloc; j++) {
 			float *d_A, *d_B, *d_C;
-			//printf("GPU memory allocation times\n");
 
 			// Memory allocation for Matrix A
 			clock_t start = clock(), diff;
 			if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix A");
+				printf("GPU: Memory was not allocated for matrix A: %d", j);
 				return EXIT_FAILURE;
 			}
 			diff = clock() - start;
 			int msec = diff * 1000 / CLOCKS_PER_SEC;
 			fprint_GPU_Allocation_Times(actualMatrixSize, j, msec, "GPU:A", "./GPUallocationTimes.txt");
-			Sleep(2);
-			//printf("GPU: A allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+			cudaFree(d_A);
 
 			// Memory allocation for Matrix B
 			start = clock(), diff;
 			if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix B");
+				printf("GPU: Memory was not allocated for matrix B: %d", j);
 				return EXIT_FAILURE;
 			}
 			diff = clock() - start;
 			msec = diff * 1000 / CLOCKS_PER_SEC;
 			fprint_GPU_Allocation_Times(actualMatrixSize, j, msec, "GPU:B", "./GPUallocationTimes.txt");
-			Sleep(2);
-			//printf("B allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
+			cudaFree(d_B);
 
 			// Memory allocation for Matrix C
 			start = clock(), diff;
 			if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix C");
+				printf("GPU: Memory was not allocated for matrix C: %d", j);
 				return EXIT_FAILURE;
 			}
 			diff = clock() - start;
 			msec = diff * 1000 / CLOCKS_PER_SEC;
 			fprint_GPU_Allocation_Times(actualMatrixSize, j, msec, "GPU:C", "./GPUallocationTimes.txt");
-			Sleep(2);
-			//printf("C allocation time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-			cudaFree(d_A);
-			cudaFree(d_B);
 			cudaFree(d_C);
-
-			j++;
 		}
-		j = 0;
-
-		Sleep(2);
 		fprint_GPU_Allocation_Times(actualMatrixSize, GPUalloc, NULL, NULL, "./GPUallocationTimes.txt");
-		Sleep(2);
 
 		actualMatrixSize += 500;
 	}
