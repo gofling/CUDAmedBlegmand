@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "lapacke.h"
 #include <stdio.h>
+#include "cblas.h"
+#include <stdlib.h>
 
 #define MATRIX_IDX(n, i, j) j*n + i
 #define MATRIX_ELEMENT(A, m, n, i, j) A[ MATRIX_IDX(m, i, j) ]
@@ -49,7 +51,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf("\nMatrix B (%d x %d) is:\n", k, n);
 		print_matrix(B, k, n);
 
-		dgemm('N', 'N', m, n, k, 1.0, A, m, B, k, 0.0, C, m);
+		LAPACKE_sgemm('N', 'N', m, n, k, 1.0, A, m, B, k, 0.0, C, m);
+
+		LAPACKE_dgesv
 
 		printf("\nMatrix C (%d x %d) = AB is:\n", m, n);
 		print_matrix(C, m, n);
