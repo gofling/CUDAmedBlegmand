@@ -1,0 +1,3 @@
+iteration-0-matrixSize-500-matrixName-GPU:A-time-2342
+iteration-0-matrixSize-500-matrixName-GPU:B-time-00
+iteration-0-matrixSize-500-matrixName-GPU:C-time-01

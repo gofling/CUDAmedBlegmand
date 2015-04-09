@@ -104,3 +104,6 @@ iteration-26-matrixSize-7000-matrixName-CPU:C-time-048
 iteration-26-matrixSize-7000-matrixName-CPU:D-time-047
 iteration-27-matrixSize-7000-matrixName-CPU:A-time-047
 iteration-27-matrixSize-7000-matrixName-CPU:B-time-048
+iteration-0-matrixSize-500-matrixName-CPU:A-time-01
+iteration-0-matrixSize-500-matrixName-CPU:B-time-02
+iteration-0-matrixSize-500-matrixName-CPU:C-time-01
