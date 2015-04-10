@@ -38,30 +38,6 @@ void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const 
 	cublasDestroy(handle);
 }
 
-// Function that multiplies matrices on the host
-static void cpu_blas_mmul(int n, const float *A, const float *B, float *C)
-{
-	const float alpha = 1.0f, beta = 0.0f;
-	int i;
-	int j;
-	int k;
-
-	for (i = 0; i < n; ++i)
-	{
-		for (j = 0; j < n; ++j)
-		{
-			float prod = 0;
-
-			for (k = 0; k < n; ++k)
-			{
-				prod += A[k * n + i] * B[j * n + k];
-			}
-
-			C[j * n + i] = alpha * prod + beta * C[j * n + i];
-		}
-	}
-}
-
 void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 
 	for (int i = 0; i < nr_rows_A; ++i){
@@ -107,6 +83,22 @@ void fprint_GPU_Allocation_Times(int matrixSize, int iterationnr, int msec, char
 	fclose(f);
 }
 
+void fprint_MemCpy_Times(int matrixSize, int iterationnr, int msec, char *currentMatrix, char *fileName) {
+	FILE *f = fopen(fileName, "a");
+
+	if (f == NULL) {
+		printf("an error occured opening GPUallocationTime.txt");
+		getchar();
+		exit(1);
+	}
+	fprintf(f, "iteration-%d-", iterationnr);
+	fprintf(f, "matrixSize-%d-", matrixSize);
+	fprintf(f, "matrixName-%s-time-%d%d\n", currentMatrix, msec / 1000, msec % 1000);
+	//Sleep(2);
+
+	fclose(f);
+}
+
 void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName) {
 
 	FILE *f = fopen(fileName, "a");
@@ -130,7 +122,7 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 
 int main() {
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC, nrRowsD, nrColsD;
-	int matrixStartSize = 500, matrixMaxSize = 13000, actualMatrixSize = matrixStartSize, mallocIterations = 500;
+	int matrixStartSize = 12000, matrixMaxSize = 13000, actualMatrixSize = matrixStartSize, mallocIterations = 50;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 
 	// Go through matrices from size 500 to size 13000
@@ -200,11 +192,63 @@ int main() {
 			GPU_fill_rand(d_A, nrRowsA, nrColsA);
 			GPU_fill_rand(d_B, nrRowsB, nrColsB);
 
-			if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
-				printf("Copying matrice A or B failed.\n");
+			// Device to host
+			start = clock(), diff;
+			if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice A failed.\n");
 				return EXIT_FAILURE;
 			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:A", "./MemCpyDtoHTimes.txt");
 			
+			start = clock(), diff;
+			if (cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice B failed.\n");
+				return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:B", "./MemCpyDtoHTimes.txt");
+
+			start = clock(), diff;
+			if (cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
+				printf("Coping matrice C from device to host failed \n");
+					return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:C", "./MemCpyDtoHTimes.txt");
+
+			// Host to device
+			start = clock(), diff;
+			if (cudaMemcpy(d_A, h_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice A failed.\n");
+				return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:A", "./MemCpyHtoDTimes.txt");
+
+			start = clock(), diff;
+			if (cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice B failed.\n");
+				return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:B", "./MemCpyHtoDTimes.txt");
+
+			start = clock(), diff;
+			if (cudaMemcpy(d_C, h_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
+				printf("Coping matrice C from device to host failed \n");
+				return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(actualMatrixSize, k, msec, "MemCpy:C", "./MemCpyHtoDTimes.txt");
+
+
 			//free host and device memory
 			free(h_A);
 			free(h_B);
@@ -259,7 +303,6 @@ int main() {
 
 	// Multiply A and B on the host
 	//start = clock(), diff;
-	//cpu_blas_mmul(nrRowsA, h_A, h_B, h_D);
 	//diff = clock() - start;
 	//msec = diff * 1000 / CLOCKS_PER_SEC;
 	//printf("CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
