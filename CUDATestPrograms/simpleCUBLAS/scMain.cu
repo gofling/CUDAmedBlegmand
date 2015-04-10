@@ -122,7 +122,7 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 
 int main() {
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC, nrRowsD, nrColsD;
-	int matrixStartSize = 12000, matrixMaxSize = 13000, actualMatrixSize = matrixStartSize, mallocIterations = 50;
+	int matrixStartSize = 12000, matrixMaxSize = 40000, actualMatrixSize = matrixStartSize, mallocIterations = 2;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 
 	// Go through matrices from size 500 to size 13000

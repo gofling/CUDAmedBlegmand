@@ -1,0 +1,15 @@
+iteration-0-matrixSize-12000-matrixName-CPU:A-time-0141
+iteration-0-matrixSize-12000-matrixName-CPU:B-time-0140
+iteration-0-matrixSize-12000-matrixName-CPU:C-time-0141
+iteration-1-matrixSize-12000-matrixName-CPU:A-time-0125
+iteration-1-matrixSize-12000-matrixName-CPU:B-time-0141
+iteration-1-matrixSize-12000-matrixName-CPU:C-time-0125
+iteration-2-matrixSize-12000-matrixName-CPU:A-time-0140
+iteration-2-matrixSize-12000-matrixName-CPU:B-time-0125
+iteration-2-matrixSize-12000-matrixName-CPU:C-time-0141
+iteration-3-matrixSize-12000-matrixName-CPU:A-time-0125
+iteration-3-matrixSize-12000-matrixName-CPU:B-time-0140
+iteration-3-matrixSize-12000-matrixName-CPU:C-time-0125
+iteration-4-matrixSize-12000-matrixName-CPU:A-time-0125
+iteration-4-matrixSize-12000-matrixName-CPU:B-time-0140
+iteration-4-matrixSize-12000-matrixName-CPU:C-time-0125

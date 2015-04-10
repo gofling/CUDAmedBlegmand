@@ -1,0 +1,12 @@
+iteration-0-matrixSize-12000-matrixName-MemCpy:A-time-0172
+iteration-0-matrixSize-12000-matrixName-MemCpy:B-time-0125
+iteration-0-matrixSize-12000-matrixName-MemCpy:C-time-0140
+iteration-1-matrixSize-12000-matrixName-MemCpy:A-time-0156
+iteration-1-matrixSize-12000-matrixName-MemCpy:B-time-0125
+iteration-1-matrixSize-12000-matrixName-MemCpy:C-time-0125
+iteration-2-matrixSize-12000-matrixName-MemCpy:A-time-0140
+iteration-2-matrixSize-12000-matrixName-MemCpy:B-time-0125
+iteration-2-matrixSize-12000-matrixName-MemCpy:C-time-0125
+iteration-3-matrixSize-12000-matrixName-MemCpy:A-time-0141
+iteration-3-matrixSize-12000-matrixName-MemCpy:B-time-0140
+iteration-3-matrixSize-12000-matrixName-MemCpy:C-time-0125
