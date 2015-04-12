@@ -1,115 +1,38 @@
-﻿Build started 12-04-2015 19:54:15.
-     1>Project "D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" on node 3 (Build target(s)).
-     1>CudaBuild:
-         Compiling CUDA source file smMain.cu...
-         cmd.exe /C "C:\Users\Rune\AppData\Local\Temp\tmpc32e9cada07a46d9a4037cbf231f4c78.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "D:\Programs\Visual Studio Professional 2013\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu"
+﻿Build started 12-04-2015 20:12:27.
+     1>Project "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" on node 2 (Build target(s)).
+     1>AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\kernel.cu 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu 
+       CudaBuild:
+         Compiling CUDA source file kernel.cu...
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp6434010b66e440879179904e92e95933.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\kernel.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\kernel.cu"
          
-         D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "D:\Programs\Visual Studio Professional 2013\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu" 
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(130): error : expected a ";"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(151): warning : parsing restarts here after previous syntax error
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrRowsA" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrColsA" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrRowsB" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrColsB" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrRowsC" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(117): warning : variable "nrColsC" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(121): warning : variable "sgemmIterations" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(122): warning : variable "matrixActualSize" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "h_A" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "h_B" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "h_C" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "d_A" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "d_B" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(123): warning : variable "d_C" was declared but never referenced
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(155): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(155): error : identifier "nrRowsC" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(155): error : identifier "nrColsC" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(155): error : a value of type "float *" cannot be used to initialize an entity of type "int"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(156): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(180): warning : parsing restarts here after previous syntax error
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(181): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(181): error : declaration is incompatible with "void CPU_fill_matrices(float *, int, int)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(181): error : identifier "h_B" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(181): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(185): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(189): warning : parsing restarts here after previous syntax error
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(191): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(191): error : declaration is incompatible with "void fprint_MemCpy_Times(int, int, int, char *, char *)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(191): error : identifier "matrixActualSize" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(191): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(193): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(193): error : variable "start" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(193): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(193): error : variable "diff" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(194): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(198): warning : parsing restarts here after previous syntax error
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(199): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(199): error : variable "msec" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(200): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(200): error : variable "fprint_MemCpy_Times" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(200): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(203): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(203): error : variable "start" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(203): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(203): error : variable "diff" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(204): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(204): error : declaration is incompatible with "void gpu_blas_mmul(const float *, const float *, float *, int, int, int)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(204): error : identifier "d_A" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(204): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(205): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(205): error : variable "diff" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(206): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(206): error : variable "msec" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(207): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(207): error : declaration is incompatible with "void fprint_sgemm_time(int, int, int, char *)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(207): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(210): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(210): error : variable "start" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(210): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(210): error : variable "diff" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(211): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(211): error : declaration is incompatible with "cudaError_t cudaMemcpy(void *, const void *, size_t, cudaMemcpyKind)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(211): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(212): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(212): error : variable "msec" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(213): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(213): error : variable "msec" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(214): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(214): error : variable "fprint_MemCpy_Times" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(214): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(217): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(217): error : declaration is incompatible with "cudaError_t cudaFree(void *)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(218): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(218): error : variable "cudaFree" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(218): error : identifier "d_B" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(219): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(219): error : variable "cudaFree" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(219): error : identifier "d_C" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(222): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(222): error : declaration is incompatible with "void free(void *)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(222): error : identifier "h_A" is undefined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(223): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(223): error : variable "free" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(224): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(224): error : variable "free" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(226): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(226): error : declaration is incompatible with "int printf(const char *, ...)"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(226): error : a value of type "const char *" cannot be used to initialize an entity of type "int"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(226): error : expected a ")"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(227): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(229): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(232): error : this declaration has no storage class or type specifier
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(232): error : variable "printf" has already been defined
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(232): error : a value of type "const char *" cannot be used to initialize an entity of type "int"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(233): error : explicit type is missing ("int" assumed)
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(233): warning : dllexport/dllimport conflict with "getchar"
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(235): error : expected a declaration
-     1>D:/Git/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(236): error : expected a declaration
+         C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\kernel.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\kernel.cu" 
+         kernel.cu
+       CudaBuild:
+         Compiling CUDA source file smMain.cu...
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp8c42f4a934a349fc8c029c20ead1137d.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu"
+         
+         C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu" 
          smMain.cu
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\BuildCustomizations\CUDA 7.0.targets(593,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "D:\Programs\Visual Studio Professional 2013\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu"" exited with code 2.
-     1>Done Building Project "D:\Git\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" (Build target(s)) -- FAILED.
+     1>C:/Users/Gideon/Documents/GitHub/CUDAmedBlegmand/CUDATestPrograms/MatrixMultiplication_Christoffer/smMain.cu(124): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe" /INCREMENTAL /NOLOGO /LIBPATH:"%C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\lib\x64" cublas.lib curand.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.lib" /MACHINE:X64 x64\Debug\kernel.cu.obj
+         x64\Debug\smMain.cu.obj
+         MatrixMultiplication_Christoffer.vcxproj -> C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe
+       PostBuildEvent:
+         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\"
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\"
+         :VCEnd
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart*.dll" "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\"
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart32_70.dll
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\cudart64_70.dll
+                 2 file(s) copied.
+     1>Done Building Project "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.84
+Time Elapsed 00:00:13.55

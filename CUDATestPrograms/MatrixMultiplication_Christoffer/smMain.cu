@@ -126,9 +126,9 @@ int main() {
 	printf("Increasing size with %d for each iteration.\n\n", matrixIncrease);
 
 	// Calculations
-	printf("Initializing complete. Starting calculations...\n")
+	printf("Initializing complete. Starting calculations...\n");
 	while (matrixActualSize <= matrixMaxSize){
-		printf("Calculating with size %d: ", matrixActualSize)
+		printf("Calculating with size %d: ", matrixActualSize);
 
 		// Square Arrays
 		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
