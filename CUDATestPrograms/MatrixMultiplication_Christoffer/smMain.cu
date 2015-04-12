@@ -8,12 +8,9 @@
 
 //Random fill matrices on device
 void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
-	
 	curandGenerator_t prng;
 	curandCreateGenerator(&prng, CURAND_RNG_PSEUDO_DEFAULT);
-
 	curandSetPseudoRandomGeneratorSeed(prng, (unsigned long long) clock());
-
 	curandGenerateUniform(prng, A, nrRowsA * nrColsA);
 }
 
@@ -50,23 +47,22 @@ void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const 
 
 //Print a given host matrix
 void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
-
 	for (int i = 0; i < nr_rows_A; ++i){
 		for (int j = 0; j < nr_cols_A; ++j){
 			printf("%f ", A[j * nr_rows_A + i]);
 		}
-
 		printf("\n");
 	}
 	printf("\n");
 }
 
-//Print times to a .txt
+// Print times to a .txt
 void fprint_MemCpy_Times(int matrixSize, int iterationnr, int msec, char *currentMatrix, char *fileName) {
 	FILE *f = fopen(fileName, "a");
 
 	if (f == NULL) {
-		printf("an error occured opening GPUMemCopyTimes.txt");
+		printf("an error occured when opening GPUMemCopyTimes.txt\n");
+		printf("Press any key to exit...");
 		getchar();
 		exit(1);
 	}
@@ -77,11 +73,13 @@ void fprint_MemCpy_Times(int matrixSize, int iterationnr, int msec, char *curren
 	fclose(f);
 }
 
+// Print times to a .txt
 void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName) {
 	FILE *f = fopen(fileName, "a");
 
 	if (f == NULL) {
-		printf("an error occured opening GPUMemCopyTimes.txt");
+		printf("an error occured when opening GPUMemCopyTimes.txt\n");
+		printf("Press any key to exit...");
 		getchar();
 		exit(1);
 	}
@@ -92,19 +90,21 @@ void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName
 	fclose(f);
 }
 
-//print a given matrix's entries to a file
+// Print a given matrix's entries to a file
 void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName) {
-
 	FILE *f = fopen(fileName, "a");
+
 	if (f == NULL) {
-		printf("Yo dude! Does not load da file!");
+		printf("an error occured when opening a file\n");
+		printf("Press any key to exit...");
+		getchar();
 		exit(1);
 	}
+
 	for (int i = 0; i < nr_rows_A; ++i){
 		for (int j = 0; j < nr_cols_A; ++j){
 			fprintf(f, "%f, ", A[j * nr_rows_A + i]);
 		}
-
 		fprintf(f, "\n");
 	}
 	fprintf(f, "\n\n");
@@ -113,18 +113,31 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 }
 
 int main() {
+	printf("Initializing...\n");
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 500, matrixMaxSize = 13000, sgemmIterations = 50;
+	int matrixStartSize = 500,
+		matrixMaxSize = 13000,
+		matrixIncrease = 500,
+		sgemmIterations = 50;
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 	srand(time(NULL));
+	printf("Copying from matrix size %d to %d.\n", matrixStartSize, matrixMaxSize);
+	printf("Increasing size with %d for each iteration.\n\n", matrixIncrease);
 
+	// Calculations
+	printf("Initializing complete. Starting calculations...\n")
 	while (matrixActualSize <= matrixMaxSize){
+		printf("Calculating with size %d: ", matrixActualSize)
 
 		// Square Arrays
 		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
 
 		for (int k = 0; k < sgemmIterations; k++){
+			if (sgemmIterations % 10 == 0)
+			{
+				printf("%d ", sgemmIterations);
+			}
 
 			// Allocate memory on Host
 			h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
@@ -209,10 +222,15 @@ int main() {
 			free(h_A);
 			free(h_B);
 			free(h_C);
+
+			printf("- Size %d done!\n", matrixActualSize);
 		}
-		matrixActualSize += 500;
+		matrixActualSize += matrixIncrease;
 	}
-	printf("Done John");
+
+	printf("Done John\n");
+	printf("Press any key to exit...");
+	getchar();
 
 	return 0;
 }
