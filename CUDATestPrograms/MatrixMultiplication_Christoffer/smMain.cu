@@ -17,6 +17,16 @@ void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 	curandGenerateUniform(prng, A, nrRowsA * nrColsA);
 }
 
+//Random fill matrices on the host
+void CPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
+
+	for (int r = 0; r < nrRowsA; r++) {
+		for (int c = 0; c < nrColsA; c++) {
+			A[r * nrRowsA + c] = static_cast<float>(rand() % 20);
+		}
+	}
+}
+
 // Function that multiplies matrices on the device 
 void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const int k, const int n) {
 	int lda = m, ldb = k, ldc = m;
@@ -71,48 +81,52 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 
 int main() {
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 500, matrixMaxSize = 100000, sgemmIterations = 2;
+	int matrixStartSize = 10000, matrixMaxSize = 15000, sgemmIterations = 5;
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 
-	// Square Arrays
-	nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
-
 	while (matrixActualSize <= matrixMaxSize){
+		
+		printf("Current matrix size: %\n", matrixActualSize);
+
+		// Square Arrays
+		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
+
 		for (int k = 0; k < sgemmIterations; k++){
 			// Allocate memory on Host
 			h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
-			if (h_A == NULL) { printf("CPU: h_A was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_A == NULL) { printf("CPU: h_A was not allocated, iteration %d", k); return EXIT_FAILURE; }
 
 			h_B = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
-			if (h_B == NULL) { printf("CPU: h_B was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_B == NULL) { printf("CPU: h_B was not allocated, iteration %d", k); return EXIT_FAILURE; }
 		
 			h_C = (float*)malloc(nrRowsC * nrColsC * sizeof(float));
-			if (h_A == NULL) { printf("CPU: h_C was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_A == NULL) { printf("CPU: h_C was not allocated, iteration %d", k); return EXIT_FAILURE; }
 			
 			// Allocate memory on Device
 
 			// Memory allocation for Matrix A
 			if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix A");
+				printf("GPU: d_A was not allocated for matrix A, iteration %d", k);
 				return EXIT_FAILURE;
 			}
 
 			// Memory allocation for Matrix B
 			if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix B");
+				printf("GPU: d_B was not allocated for matrix B, iteration %d", k);
 				return EXIT_FAILURE;
 			}
 
 			// Memory allocation for Matrix C
 			if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix C");
+				printf("GPU: D_C was not allocated for matrix C, iteration %d", k);
 				return EXIT_FAILURE;
 			}
 
 			// Fill the arrays A and B on GPU with random numbers
 			GPU_fill_rand(d_A, nrRowsA, nrColsA);
 			GPU_fill_rand(d_B, nrRowsB, nrColsB);
+			//CPU_fill_rand(h_A, nrRowsA, nrColsA);
 
 			// Optionally we can copy the data back on CPU and print the arrays
 			if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
@@ -158,19 +172,20 @@ int main() {
 			//printf("CPU C = \n");
 			//print_matrix(h_C, nrRowsC, nrColsC);
 
-			//Free GPU memory
-			cudaFree(d_A);
-			cudaFree(d_B);
-			cudaFree(d_C);
-
-			//Free CPU memory
+			//free host and device memory
 			free(h_A);
 			free(h_B);
 			free(h_C);
+
+			cudaFree(d_A);
+			cudaFree(d_B);
+			cudaFree(d_C);
 		}
 		matrixActualSize += 500;
 	}
 	printf("Done John");
+
+	cudaDeviceReset();
 
 	return 0;
 }
