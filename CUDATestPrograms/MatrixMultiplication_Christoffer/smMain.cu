@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Random filling og arrays on device
+//Random fill matrices on device
 void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 	
 	curandGenerator_t prng;
@@ -17,7 +17,17 @@ void GPU_fill_rand(float *A, int nrRowsA, int nrColsA) {
 	curandGenerateUniform(prng, A, nrRowsA * nrColsA);
 }
 
-// Function that multiplies matrices on the device 
+//Random fill matrices on host
+void CPU_fill_matrices(float *A, int nrRowsA, int nrColsA) {
+	
+	for (int r = 0; r < nrRowsA; r++) {
+		for (int c = 0; c < nrColsA; c++){
+			A[r * nrRowsA + c] = static_cast<float>(rand() % 20);
+		}
+	}
+}
+
+//Function that multiplies matrices on the device 
 void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const int k, const int n) {
 	int lda = m, ldb = k, ldc = m;
 	const float alf = 1;
@@ -38,6 +48,7 @@ void gpu_blas_mmul(const float *A, const float *B, float *C, const int m, const 
 	cublasDestroy(handle);
 }
 
+//Print a given host matrix
 void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 
 	for (int i = 0; i < nr_rows_A; ++i){
@@ -50,6 +61,38 @@ void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 	printf("\n");
 }
 
+//Print times to a .txt
+void fprint_MemCpy_Times(int matrixSize, int iterationnr, int msec, char *currentMatrix, char *fileName) {
+	FILE *f = fopen(fileName, "a");
+
+	if (f == NULL) {
+		printf("an error occured opening GPUMemCopyTimes.txt");
+		getchar();
+		exit(1);
+	}
+	fprintf(f, "iteration-%d-", iterationnr);
+	fprintf(f, "matrixSize-%d-", matrixSize);
+	fprintf(f, "matrixName-%s-time-%d%d\n", currentMatrix, msec / 1000, msec % 1000);
+
+	fclose(f);
+}
+
+void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName) {
+	FILE *f = fopen(fileName, "a");
+
+	if (f == NULL) {
+		printf("an error occured opening GPUMemCopyTimes.txt");
+		getchar();
+		exit(1);
+	}
+	fprintf(f, "iteration-%d-", iterationnr);
+	fprintf(f, "matrixSize-%d-", matrixSize);
+	fprintf(f, "time-%d%d\n", msec / 1000, msec % 1000);
+
+	fclose(f);
+}
+
+//print a given matrix's entries to a file
 void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName) {
 
 	FILE *f = fopen(fileName, "a");
@@ -71,92 +114,91 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 
 int main() {
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 500, matrixMaxSize = 100000, sgemmIterations = 2;
+	int matrixStartSize = 500, matrixMaxSize = 13000, sgemmIterations = 50;
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
-
-	// Square Arrays
-	nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
+	srand(time(NULL));
 
 	while (matrixActualSize <= matrixMaxSize){
+
+		// Square Arrays
+		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
+
 		for (int k = 0; k < sgemmIterations; k++){
+
 			// Allocate memory on Host
 			h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
-			if (h_A == NULL) { printf("CPU: h_A was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_A == NULL) { 
+				printf("CPU: h_A was not allocated: %d", k); 
+				return EXIT_FAILURE; 
+			}
 
 			h_B = (float*)malloc(nrRowsB * nrColsB * sizeof(float));
-			if (h_B == NULL) { printf("CPU: h_B was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_B == NULL) { 
+				printf("CPU: h_B was not allocated: %d", k); 
+				return EXIT_FAILURE; 
+			}
 		
 			h_C = (float*)malloc(nrRowsC * nrColsC * sizeof(float));
-			if (h_A == NULL) { printf("CPU: h_C was not allocated: %d", k); return EXIT_FAILURE; }
+			if (h_A == NULL) { 
+				printf("CPU: h_C was not allocated: %d", k); 
+				return EXIT_FAILURE; 
+			}
 			
 			// Allocate memory on Device
-
-			// Memory allocation for Matrix A
 			if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
 				printf("Memory was not allocated for matrix A");
 				return EXIT_FAILURE;
 			}
 
-			// Memory allocation for Matrix B
 			if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
 				printf("Memory was not allocated for matrix B");
 				return EXIT_FAILURE;
 			}
 
-			// Memory allocation for Matrix C
 			if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
 				printf("Memory was not allocated for matrix C");
 				return EXIT_FAILURE;
 			}
 
 			// Fill the arrays A and B on GPU with random numbers
-			GPU_fill_rand(d_A, nrRowsA, nrColsA);
-			GPU_fill_rand(d_B, nrRowsB, nrColsB);
+			//GPU_fill_rand(d_A, nrRowsA, nrColsA);
+			//GPU_fill_rand(d_B, nrRowsB, nrColsB);
+			CPU_fill_matrices(h_A, nrRowsA, nrColsA);
+			CPU_fill_matrices(h_B, nrColsB, nrColsB);
 
-			// Optionally we can copy the data back on CPU and print the arrays
-			if (cudaMemcpy(h_A, d_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyDeviceToHost) || cudaMemcpy(h_B, d_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
-				printf("Copying matrice A or B failed.\n");
+			//Copy h_A and h_B to the device
+			clock_t start = clock(), diff;
+			if (cudaMemcpy(d_A, h_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice A failed.\n");
 				return EXIT_FAILURE;
 			}
-
-			//print_matrix(h_A, nrRowsA, nrColsA);
-			//print_matrix(h_B, nrRowsB, nrRowsB);
-			//output_matrix(h_A, nrRowsA, nrRowsB, "./matrices.txt");
-			//output_matrix(h_B, nrRowsB, nrRowsB, "./matrices1.txt");
-
-			// Multiply A and B on device
-			/*clock_t start = clock(), diff;
-			gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
 			diff = clock() - start;
 			int msec = diff * 1000 / CLOCKS_PER_SEC;
-			printf("Warm-up GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);*/
+			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:A", "./MemCpyHtoDTimes.txt");
 
-			clock_t start = clock(), diff;
+			start = clock(), diff;
+			if (cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
+				printf("Copying matrice B failed.\n");
+				return EXIT_FAILURE;
+			}
+			diff = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:B", "./MemCpyHtoDTimes.txt");
+
+			//Perform Sgemm on the device
+			start = clock(), diff;
 			gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
 			diff = clock() - start;
-			int msec = diff * 1000 / CLOCKS_PER_SEC;
-			printf("GPU time, size %d: %d seconds %d milliseconds\n", matrixActualSize, msec / 1000, msec % 1000);
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_sgemm_time(matrixActualSize, k, msec, "./SgemmGPUtimes.txt");
 
-			//start = clock(), diff;
+			//Copy result back to the host
+			start = clock(), diff;
 			cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
-			//output_matrix(h_C, nrRowsC, nrColsC, "./matrices.txt");
-			//diff = clock() - start;
-			////msec = diff * 1000 / CLOCKS_PER_SEC;
-			//diff = clock() - start;
-			//int msec = diff * 1000 / CLOCKS_PER_SEC;
-			//printf("GPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-
-			// Copy (and print) the result on host memory
-			//printf("Copy result amtrix from gpu to cpu time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-			//printf("GPU C = \n");
-			//print_matrix(h_C, nrRowsC, nrColsC);
-
-			//diff = clock() - start;
-			//msec = diff * 1000 / CLOCKS_PER_SEC;
-			//printf("CPU time: %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-			//printf("CPU C = \n");
-			//print_matrix(h_C, nrRowsC, nrColsC);
+			msec = clock() - start;
+			msec = diff * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:d_C", "./MemCpyResulttoH.txt");
 
 			//Free GPU memory
 			cudaFree(d_A);
