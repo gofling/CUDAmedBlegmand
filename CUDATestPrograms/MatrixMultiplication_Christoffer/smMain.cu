@@ -134,9 +134,9 @@ int main() {
 		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
 
 		for (int k = 0; k < sgemmIterations; k++){
-			if (sgemmIterations % 10 == 0)
+			if (k % 10 == 0)
 			{
-				printf("%d ", sgemmIterations);
+				printf("%d ", k);
 			}
 
 			// Allocate memory on Host
@@ -223,8 +223,9 @@ int main() {
 			free(h_B);
 			free(h_C);
 
-			printf("- Size %d done!\n", matrixActualSize);
 		}
+		printf("- Size %d done!\n", matrixActualSize);
+
 		matrixActualSize += matrixIncrease;
 	}
 
