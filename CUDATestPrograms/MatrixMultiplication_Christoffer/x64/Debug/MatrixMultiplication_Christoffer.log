@@ -1,10 +1,10 @@
-﻿Build started 12-04-2015 12:56:29.
+﻿Build started 10-04-2015 15:10:02.
      1>Project "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" /I. /FIcuda_runtime.h /c C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu 
        CudaBuild:
          Compiling CUDA source file smMain.cu...
-         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmp5ed1cac522fa4a79a866cf00642d192b.cmd"
+         cmd.exe /C "C:\Users\Gideon\AppData\Local\Temp\tmpd91c55d381c245e3a401cca7bba4e4c8.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu"
          
          C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\smMain.cu.obj "C:\Users\Gideon\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\smMain.cu" 
@@ -25,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.28
+Time Elapsed 00:00:07.09
