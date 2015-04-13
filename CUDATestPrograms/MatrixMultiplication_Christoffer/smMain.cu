@@ -18,7 +18,7 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 int main() {
 	printf("Initializing...\n");
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 500,
+	int matrixStartSize = 11500,
 		matrixMaxSize = 13000,
 		matrixIncrease = 500,
 		sgemmIterations = 500,
@@ -140,8 +140,6 @@ int main() {
 
 		matrixActualSize += matrixIncrease;
 	}
-
-	cudaDeviceReset();
 
 	printf("Done John\n");
 	printf("Press any key to exit...");

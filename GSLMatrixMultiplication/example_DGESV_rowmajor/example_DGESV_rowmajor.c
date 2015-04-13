@@ -18,8 +18,8 @@ int main(void)
 	/*---------- Square Matrix Size ----------*/
 	int nrRows, nrCols;
 	nrRows = nrCols = 5;
-
-	int matrixStartSize = 500, matrixEndSize = 12000;
+	float *MatrixA, *MatrixB, *MatrixC;;
+	int matrixStartSize = 11500, matrixEndSize = 12000;
 	int matrixActualSize = matrixStartSize;
 	int iterationsFor = 5;
 	
@@ -33,21 +33,18 @@ int main(void)
 
 
 			/*---------- Matrix Allocation ----------*/
-			float *MatrixA;
 			MatrixA = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixA == NULL) {
 				printf("MatrixA not allocated");
 				return EXIT_FAILURE;
 			}
 
-			float *MatrixB;
 			MatrixB = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixB == NULL) {
 				printf("MatrixB not allocated");
 				return EXIT_FAILURE;
 			}
 
-			float *MatrixC;
 			MatrixC = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixC == NULL) {
 				printf("MatrixC not allocated");
