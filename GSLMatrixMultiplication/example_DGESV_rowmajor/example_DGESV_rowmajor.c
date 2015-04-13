@@ -31,23 +31,22 @@ int main(void)
 		for (int i = 0; i < iterationsFor; i++)
 		{
 
-
 			/*---------- Matrix Allocation ----------*/
 			MatrixA = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixA == NULL) {
-				printf("MatrixA not allocated");
+				printf("MatrixA not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
 
 			MatrixB = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixB == NULL) {
-				printf("MatrixB not allocated");
+				printf("MatrixB not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
 
 			MatrixC = (float*)malloc(nrRows*nrCols*sizeof(float));
 			if (MatrixC == NULL) {
-				printf("MatrixC not allocated");
+				printf("MatrixC not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
 			/*---------- Fill Matrix A and B With Random Numbers ----------*/
