@@ -14,11 +14,11 @@ void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName
 /*---------- Main ----------*/
 int main(void)
 {
+	/*---------- Set the Seed to Feed srand() to NULL ----------*/
 	srand(time(NULL));
 	/*---------- Square Matrix Size ----------*/
 	int nrRows, nrCols;
-	nrRows = nrCols = 5;
-	float *MatrixA, *MatrixB, *MatrixC;;
+	float *MatrixA, *MatrixB, *MatrixC;
 	int matrixStartSize = 11500, matrixEndSize = 12000;
 	int matrixActualSize = matrixStartSize;
 	int iterationsFor = 5;
@@ -49,6 +49,7 @@ int main(void)
 				printf("MatrixC not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
+
 			/*---------- Fill Matrix A and B With Random Numbers ----------*/
 			cpu_rand(MatrixA, nrRows, nrCols);
 			cpu_rand(MatrixB, nrRows, nrCols);
@@ -63,11 +64,6 @@ int main(void)
 			fprint_sgemm_time(matrixActualSize, i, msec, "./CPU_Times.txt");
 
 			/*---------- Print MatrixA, MatrixB, Matrix C and Time of Computation ----------*/
-			/*print_matrix(MatrixA, nrRows, nrCols);
-			print_matrix(MatrixB, nrRows, nrCols);
-			print_matrix(MatrixC, nrRows, nrCols);
-			printf("%d seconds %d milliseconds\n", msec / 1000, msec % 1000);
-			*/
 			printf("Iteration number: %d", i);
 			free(MatrixA);
 			free(MatrixB);
@@ -110,12 +106,12 @@ void wait_exit() {
 	int kage;
 	scanf("%d", &kage);
 }
-
+/*---------- Funtion for Writing the Timing to a File ----------*/
 void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName) {
 	FILE *f = fopen(fileName, "a");
 
 	if (f == NULL) {
-		printf("an error occured when opening GPUMemCopyTimes.txt\n");
+		printf("an error occured when opening %s\n", fileName);
 		printf("Press any key to exit...");
 		getchar();
 		exit(1);
