@@ -21,7 +21,7 @@ int main(void)
 	float *MatrixA, *MatrixB, *MatrixC;
 	int matrixStartSize = 11500, matrixEndSize = 12000;
 	int matrixActualSize = matrixStartSize;
-	int iterationsFor = 5;
+	int iterationsFor = 1;
 	
 	while (matrixActualSize <= matrixEndSize){
 
@@ -49,7 +49,7 @@ int main(void)
 				printf("MatrixC not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
-
+			printf("MatrixA, MatrixB og MatrixC allokeret");
 			/*---------- Fill Matrix A and B With Random Numbers ----------*/
 			cpu_rand(MatrixA, nrRows, nrCols);
 			cpu_rand(MatrixB, nrRows, nrCols);
