@@ -1,6 +1,6 @@
 /*---------- Includes ----------*/
 #include <stdio.h>
-#include <C:\cygwin64\usr\include\gsl\gsl_cblas.h>
+#include <F:\Programs\Cygwin64\usr\include\gsl\gsl_cblas.h>
 #include <time.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -27,9 +27,13 @@ int main(void)
 
 		nrRows = nrCols = matrixActualSize;
 
-		printf("\nMatrix size: %d\n", matrixActualSize);
+		printf("\nMatrix size: %d, ", matrixActualSize);
 		for (int i = 0; i < iterationsFor; i++)
 		{
+			if (i % 10 == 0)
+			{
+				printf("%d ", i);
+			}
 
 			/*---------- Matrix Allocation ----------*/
 			MatrixA = (float*)malloc(nrRows*nrCols*sizeof(float));
@@ -64,7 +68,6 @@ int main(void)
 			fprint_sgemm_time(matrixActualSize, i, msec, "./CPU_Times.txt");
 
 			/*---------- Print MatrixA, MatrixB, Matrix C and Time of Computation ----------*/
-			printf("ERROR: DELETED '%d' FILES FROM C:/Users/Rune/Documents/GitHub/CUDAmedBlegmand\n", i + 1);
 			free(MatrixA);
 			free(MatrixB);
 			free(MatrixC);
@@ -107,9 +110,8 @@ void print_matrix(const float *A, int nr_rows_A, int nr_cols_A) {
 
 /*---------- Function for Stopping exiting of Console Application ----------*/
 void wait_exit() {
-	
-	int kage;
-	scanf("%d", &kage);
+	printf("\nPress any key to exit...");
+	getchar();
 }
 /*---------- Funtion for Writing the Timing to a File ----------*/
 void fprint_sgemm_time(int matrixSize, int iterationnr, int msec, char *fileName) {
