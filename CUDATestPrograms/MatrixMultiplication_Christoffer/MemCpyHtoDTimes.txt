@@ -1,4 +1,0 @@
-iteration-0-matrixSize-11500-matrixName-MemCpy:A-time-0140
-iteration-0-matrixSize-11500-matrixName-MemCpy:B-time-0125
-iteration-0-matrixSize-11500-matrixName-MemCpy:A-time-0125
-iteration-0-matrixSize-11500-matrixName-MemCpy:B-time-0125

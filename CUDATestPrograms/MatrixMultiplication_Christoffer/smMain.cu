@@ -18,14 +18,15 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 int main() {
 	printf("Initializing...\n");
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 11500,
-		matrixMaxSize = 13000,
+	int matrixStartSize = 500,
+		matrixMaxSize = 12000,
 		matrixIncrease = 500,
-		sgemmIterations = 500,
-		sgemmIterationsDecrease = 150;
+		sgemmIterations = 50,
+		sgemmIterationsDecrease = 5;
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 	srand(time(NULL));
+	cudaError_t error;
 	printf("Copying from matrix size %d to %d.\n", matrixStartSize, matrixMaxSize);
 	printf("Increasing size with %d for each iteration.\n\n", matrixIncrease);
 
@@ -38,10 +39,10 @@ int main() {
 		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
 
 		for (int k = 0; k < sgemmIterations; k++){
-			if (k % 10 == 0)
+			/*if (k % 10 == 0)
 			{
 				printf("%d ", k);
-			}
+			}*/
 
 			// Allocate memory on Host
 			h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
@@ -57,24 +58,27 @@ int main() {
 			}
 		
 			h_C = (float*)malloc(nrRowsC * nrColsC * sizeof(float));
-			if (h_A == NULL) { 
+			if (h_C == NULL) { 
 				printf("CPU: h_C was not allocated: %d", k); 
 				return EXIT_FAILURE; 
 			}
 			
 			// Allocate memory on Device
-			if (cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix A");
+			error = cudaMalloc(&d_A, nrRowsA * nrColsA * sizeof(float));
+			if (error != cudaSuccess) {
+				printf("Memory was not allocated for matrix A: %d", k);
 				return EXIT_FAILURE;
 			}
 
-			if (cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix B");
+			error = cudaMalloc(&d_B, nrRowsB * nrColsB * sizeof(float));
+			if (error != cudaSuccess) {
+				printf("Memory was not allocated for matrix B: %d", k);
 				return EXIT_FAILURE;
 			}
 
-			if (cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float)) != cudaSuccess) {
-				printf("Memory was not allocated for matrix C");
+			error = cudaMalloc(&d_C, nrRowsC * nrColsC * sizeof(float));
+			if (error != cudaSuccess) {
+				printf("Memory was not allocated for matrix C: %d", k);
 				return EXIT_FAILURE;
 			}
 
@@ -86,8 +90,9 @@ int main() {
 
 			//Copy h_A and h_B to the device
 			clock_t start = clock(), diff;
-			if (cudaMemcpy(d_A, h_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
-				printf("Copying matrice h_A HtoD failed.\n");
+			error = cudaMemcpy(d_A, h_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyHostToDevice);
+			if (error != cudaSuccess){
+				printf("Copying matrice h_A HtoD failed.\n: %d", k);
 				return EXIT_FAILURE;
 			}
 			diff = clock() - start;
@@ -95,8 +100,9 @@ int main() {
 			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:A", "./MemCpyHtoDTimes.txt");
 
 			start = clock(), diff;
-			if (cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice) != CUBLAS_STATUS_SUCCESS){
-				printf("Copying matrice h_B HtoD failed.\n");
+			error = cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice);
+			if (error != cudaSuccess){
+				printf("Copying matrice h_B HtoD failed.\n: %d", k);
 				return EXIT_FAILURE;
 			}
 			diff = clock() - start;
@@ -112,8 +118,9 @@ int main() {
 
 			//Copy result back to the host
 			start = clock(), diff;
-			if (cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost) != CUBLAS_STATUS_SUCCESS){
-				printf("Copying matrix d_C DtoH failed");
+			error = cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
+			if (error != cudaSuccess){
+				printf("Copying matrix d_C DtoH failed iteration %d", k);
 				return EXIT_FAILURE;
 			}
 			msec = clock() - start;
@@ -134,7 +141,7 @@ int main() {
 		}
 		printf("- Size %d done!\n", matrixActualSize);
 
-		if (sgemmIterations > 50) {
+		if (sgemmIterations > 5) {
 			sgemmIterations -= sgemmIterationsDecrease;
 		}
 
