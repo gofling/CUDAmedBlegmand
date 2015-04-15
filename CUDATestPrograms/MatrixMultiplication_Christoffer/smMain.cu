@@ -21,8 +21,9 @@ int main() {
 	int matrixStartSize = 500,
 		matrixMaxSize = 12000,
 		matrixIncrease = 500,
-		sgemmIterations = 50,
-		sgemmIterationsDecrease = 5;
+		sgemmIterations = 500,
+		sgemmIterationsMinimum = 100,
+		sgemmIterationsDecrease = 20;
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 	srand(time(NULL));
@@ -142,7 +143,7 @@ int main() {
 		}
 		printf("- Size %d done!\n", matrixActualSize);
 
-		if (sgemmIterations > 5) {
+		if (sgemmIterations > sgemmIterationsMinimum) {
 			sgemmIterations -= sgemmIterationsDecrease;
 		}
 
