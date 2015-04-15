@@ -19,15 +19,15 @@ int main(void)
 	/*---------- Square Matrix Size ----------*/
 	int nrRows, nrCols;
 	float *MatrixA, *MatrixB, *MatrixC;
-	int matrixStartSize = 11500, matrixEndSize = 12000;
+	int matrixStartSize = 500, matrixEndSize = 6000;
 	int matrixActualSize = matrixStartSize;
-	int iterationsFor = 1;
+	int iterationsFor = 50;
 	
 	while (matrixActualSize <= matrixEndSize){
 
 		nrRows = nrCols = matrixActualSize;
 
-		printf("\nMatrix size: %d ", matrixActualSize);
+		printf("\nMatrix size: %d\n", matrixActualSize);
 		for (int i = 0; i < iterationsFor; i++)
 		{
 
@@ -49,7 +49,7 @@ int main(void)
 				printf("MatrixC not allocated iteration %d", i);
 				return EXIT_FAILURE;
 			}
-			printf("MatrixA, MatrixB og MatrixC allokeret");
+
 			/*---------- Fill Matrix A and B With Random Numbers ----------*/
 			cpu_rand(MatrixA, nrRows, nrCols);
 			cpu_rand(MatrixB, nrRows, nrCols);
@@ -64,15 +64,20 @@ int main(void)
 			fprint_sgemm_time(matrixActualSize, i, msec, "./CPU_Times.txt");
 
 			/*---------- Print MatrixA, MatrixB, Matrix C and Time of Computation ----------*/
-			printf("Iteration number: %d", i);
+			printf("ERROR: DELETED '%d' FILES FROM C:/Users/Rune/Documents/GitHub/CUDAmedBlegmand\n", i + 1);
 			free(MatrixA);
 			free(MatrixB);
 			free(MatrixC);
-
 		}
+		/*---------- Set Matrix Size For the Next Loop to +500 ----------*/
 		matrixActualSize += 500;
+		/*---------- Check to See If Iterations For The Next Loop is Under 5 and Set It to be 5 If It is ----------*/
+		if (iterationsFor > 5) {
+			iterationsFor -= 5;
+		}
+		
 	}
-	/*---------- Wait on keypress for exit and Formal Ending of Main ----------*/
+	/*---------- Wait On Keypress For Exit and Formal Ending of Main ----------*/
 	wait_exit();
 	return 0;
 }
