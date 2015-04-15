@@ -39,10 +39,11 @@ int main() {
 		nrRowsA = nrColsA = nrRowsB = nrColsB = nrRowsC = nrColsC = matrixActualSize;
 
 		for (int k = 0; k < sgemmIterations; k++){
-			/*if (k % 10 == 0)
+
+			if (k % 5 == 0)
 			{
 				printf("%d ", k);
-			}*/
+			}
 
 			// Allocate memory on Host
 			h_A = (float*)malloc(nrRowsA * nrColsA * sizeof(float));
