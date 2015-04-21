@@ -101,15 +101,15 @@ int main() {
 			int msecHtoDA = diffHtoDA * 1000 / CLOCKS_PER_SEC;
 			fprint_MemCpy_Times(matrixActualSize, k, msecHtoDA, "MemCpy:A", "./MemCpyHtoDTimes.txt");
 
-			clock_t startSgemmB = clock(), diffSgemmB;
+			clock_t startHtoDB = clock(), diffHtoDB;
 			error = cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice);
 			if (error != cudaSuccess){
 				printf("Copying matrice h_B HtoD failed.\n: %d", k);
 				return EXIT_FAILURE;
 			}
-			diffSgemmB = clock() - startSgemmB;
-			int msecSgemmB = diffSgemmB * 1000 / CLOCKS_PER_SEC;
-			fprint_MemCpy_Times(matrixActualSize, k, msecSgemmB, "MemCpy:B", "./MemCpyHtoDTimes.txt");
+			diffHtoDB = clock() - startHtoDB;
+			int msecHtoDB = diffHtoDB * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msecHtoDB, "MemCpy:B", "./MemCpyHtoDTimes.txt");
 
 			//Perform Sgemm on the device
 			clock_t startSgemm = clock(), diffSgemm;
