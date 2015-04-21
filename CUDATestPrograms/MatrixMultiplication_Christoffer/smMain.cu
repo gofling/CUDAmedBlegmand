@@ -125,8 +125,8 @@ int main() {
 				printf("Copying matrix d_C DtoH failed iteration %d", k);
 				return EXIT_FAILURE;
 			}
-			int msecDtoH = clock() - startDtoH;
-			msecDtoH = diffDtoH * 1000 / CLOCKS_PER_SEC;
+			diffDtoH = clock() - startDtoH;
+			int msecDtoH = diffDtoH * 1000 / CLOCKS_PER_SEC;
 			fprint_MemCpy_Times(matrixActualSize, k, msecDtoH, "MemCpy:d_C", "./MemCpyResulttoH.txt");
 
 			//Free GPU memory
