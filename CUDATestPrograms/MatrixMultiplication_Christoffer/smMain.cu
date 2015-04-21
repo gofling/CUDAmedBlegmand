@@ -91,43 +91,43 @@ int main() {
 			CPU_fill_matrices(h_B, nrColsB, nrColsB);
 
 			//Copy h_A and h_B to the device
-			clock_t start = clock(), diff;
+			clock_t startHtoDA = clock(), diffHtoDA;
 			error = cudaMemcpy(d_A, h_A, nrRowsA * nrColsA * sizeof(float), cudaMemcpyHostToDevice);
 			if (error != cudaSuccess){
 				printf("Copying matrice h_A HtoD failed.\n: %d", k);
 				return EXIT_FAILURE;
 			}
-			diff = clock() - start;
-			int msec = diff * 1000 / CLOCKS_PER_SEC;
-			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:A", "./MemCpyHtoDTimes.txt");
+			diffHtoDA = clock() - startHtoDA;
+			int msecHtoDA = diffHtoDA * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msecHtoDA, "MemCpy:A", "./MemCpyHtoDTimes.txt");
 
-			start = clock(), diff;
+			clock_t startSgemmB = clock(), diffSgemmB;
 			error = cudaMemcpy(d_B, h_B, nrRowsB * nrColsB * sizeof(float), cudaMemcpyHostToDevice);
 			if (error != cudaSuccess){
 				printf("Copying matrice h_B HtoD failed.\n: %d", k);
 				return EXIT_FAILURE;
 			}
-			diff = clock() - start;
-			msec = diff * 1000 / CLOCKS_PER_SEC;
-			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:B", "./MemCpyHtoDTimes.txt");
+			diffSgemmB = clock() - startSgemmB;
+			int msecSgemmB = diffSgemmB * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msecSgemmB, "MemCpy:B", "./MemCpyHtoDTimes.txt");
 
 			//Perform Sgemm on the device
-			start = clock(), diff;
+			clock_t startSgemm = clock(), diffSgemm;
 			gpu_blas_mmul(d_A, d_B, d_C, nrRowsA, nrColsA, nrColsB);
-			diff = clock() - start;
-			msec = diff * 1000 / CLOCKS_PER_SEC;
-			fprint_sgemm_time(matrixActualSize, k, msec, "./SgemmGPUtimes.txt");
+			diffSgemm = clock() - startSgemm;
+			int msecSgemm = diffSgemm * 1000 / CLOCKS_PER_SEC;
+			fprint_sgemm_time(matrixActualSize, k, msecSgemm, "./SgemmGPUtimes.txt");
 
 			//Copy result back to the host
-			start = clock(), diff;
+			clock_t startDtoH = clock(), diffDtoH;
 			error = cudaMemcpy(h_C, d_C, nrRowsC * nrColsC * sizeof(float), cudaMemcpyDeviceToHost);
 			if (error != cudaSuccess){
 				printf("Copying matrix d_C DtoH failed iteration %d", k);
 				return EXIT_FAILURE;
 			}
-			msec = clock() - start;
-			msec = diff * 1000 / CLOCKS_PER_SEC;
-			fprint_MemCpy_Times(matrixActualSize, k, msec, "MemCpy:d_C", "./MemCpyResulttoH.txt");
+			int msecDtoH = clock() - startDtoH;
+			msecDtoH = diffDtoH * 1000 / CLOCKS_PER_SEC;
+			fprint_MemCpy_Times(matrixActualSize, k, msecDtoH, "MemCpy:d_C", "./MemCpyResulttoH.txt");
 
 			//Free GPU memory
 			cudaFree(d_A);
