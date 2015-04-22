@@ -1,6 +1,6 @@
 /*---------- Includes ----------*/
 #include <stdio.h>
-#include <F:\Programs\Cygwin64\usr\include\gsl\gsl_cblas.h>
+#include <C:\cygwin64\usr\include\gsl\gsl_cblas.h>
 #include <time.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -19,7 +19,7 @@ int main(void)
 	/*---------- Square Matrix Size ----------*/
 	int nrRows, nrCols;
 	float *MatrixA, *MatrixB, *MatrixC;
-	int matrixStartSize = 500, matrixEndSize = 6000;
+	int matrixStartSize = 100, matrixEndSize = 3500;
 	int matrixActualSize = matrixStartSize;
 	int iterationsFor = 50;
 	
@@ -73,11 +73,11 @@ int main(void)
 			free(MatrixC);
 		}
 		/*---------- Set Matrix Size For the Next Loop to +500 ----------*/
-		matrixActualSize += 500;
+		matrixActualSize += 100;
 		/*---------- Check to See If Iterations For The Next Loop is Under 5 and Set It to be 5 If It is ----------*/
-		if (iterationsFor > 5) {
+		/*if (iterationsFor > 5) {
 			iterationsFor -= 5;
-		}
+		}*/
 		
 	}
 	/*---------- Wait On Keypress For Exit and Formal Ending of Main ----------*/

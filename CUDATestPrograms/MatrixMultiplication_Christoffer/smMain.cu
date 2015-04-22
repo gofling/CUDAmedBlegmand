@@ -18,12 +18,12 @@ void output_matrix(const float *A, int nr_rows_A, int nr_cols_A, char *fileName)
 int main() {
 	printf("Initializing...\n");
 	int nrRowsA, nrColsA, nrRowsB, nrColsB, nrRowsC, nrColsC;
-	int matrixStartSize = 500,
-		matrixMaxSize = 12000,
-		matrixIncrease = 500,
-		sgemmIterations = 500,
-		sgemmIterationsMinimum = 100,
-		sgemmIterationsDecrease = 20;
+	int matrixStartSize = 100,
+		matrixMaxSize = 3500,
+		matrixIncrease = 100,
+		sgemmIterations = 50,
+		/*sgemmIterationsMinimum = 0,
+		sgemmIterationsDecrease = 0;*/
 	int matrixActualSize = matrixStartSize;
 	float *h_A, *h_B, *h_C, *d_A, *d_B, *d_C;
 	srand(time(NULL));
@@ -143,9 +143,9 @@ int main() {
 		}
 		printf("- Size %d done!\n", matrixActualSize);
 
-		if (sgemmIterations > sgemmIterationsMinimum) {
+		/*if (sgemmIterations > sgemmIterationsMinimum) {
 			sgemmIterations -= sgemmIterationsDecrease;
-		}
+		}*/
 
 		matrixActualSize += matrixIncrease;
 	}
