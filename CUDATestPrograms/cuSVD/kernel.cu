@@ -6,6 +6,7 @@
 #include "cuda_runtime.h"
 #include "helper_cuda.h"
 #include "helper_functions.h"
+#include "device_launch_parameters.h"
 
 #define CUDA_CHK(NAME, ARGS) { \
   cudaError_t cuda_err_code = NAME ARGS; \
