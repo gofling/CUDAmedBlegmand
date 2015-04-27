@@ -1,4 +1,4 @@
-﻿Build started 22-04-2015 08:47:31.
+﻿Build started 24-04-2015 13:39:22.
      1>Project "C:\Users\Christoffer\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\MatrixMultiplication_Christoffer\MatrixMultiplication_Christoffer.vcxproj" on node 2 (Build target(s)).
      1>Link:
          MatrixMultiplication_Christoffer.vcxproj -> C:\Users\Christoffer\Documents\GitHub\CUDAmedBlegmand\CUDATestPrograms\x64\Debug\MatrixMultiplication_Christoffer.exe
@@ -14,4 +14,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.20
+Time Elapsed 00:00:00.41

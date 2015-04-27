@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MatrixMultiplication_Christ
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BLAS_MAGIC", "BLAS_MAGIC\BLAS_MAGIC.vcxproj", "{07E702BA-FA78-4D70-AC66-1EAFBE7C436F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cuSVD", "cuSVD\cuSVD.vcxproj", "{A43D7090-7368-4627-BDD6-9B943AB9A73C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -68,6 +70,18 @@ Global
 		{07E702BA-FA78-4D70-AC66-1EAFBE7C436F}.Release|Win32.ActiveCfg = Release|Win32
 		{07E702BA-FA78-4D70-AC66-1EAFBE7C436F}.Release|Win32.Build.0 = Release|Win32
 		{07E702BA-FA78-4D70-AC66-1EAFBE7C436F}.Release|x64.ActiveCfg = Release|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|Win32.Build.0 = Debug|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|x64.ActiveCfg = Debug|x64
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Debug|x64.Build.0 = Debug|x64
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|Win32.ActiveCfg = Release|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|Win32.Build.0 = Release|Win32
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|x64.ActiveCfg = Release|x64
+		{A43D7090-7368-4627-BDD6-9B943AB9A73C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
