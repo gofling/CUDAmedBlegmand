@@ -48,34 +48,34 @@ __device__ Matrix GetSubMatrix(Matrix A, int row, int col)
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
 int main() {
-	float A[6] = { 1, 2, 3, 4, 5, 6 };
-	float B[12] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+	float A[16] = { 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4 };
+	float B[32] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8 };
 	int rowsA, colsA, rowsB, colsB;
-	rowsA = 2;
-	colsA = 3;
-	rowsB = 3;
-	colsB = 4;
+	rowsA = 4;
+	colsA = 4;
+	rowsB = 4;
+	colsB = 8;
 	float *C = (float*)calloc(rowsA * colsB, sizeof(float));
 
 	Matrix Am, Bm, Cm;
 	Am.height = rowsA;
 	Am.width = colsA;
 	Am.elements = A;
-	Am.stride = sizeof(float);
+	Am.stride = Am.width;
 	Bm.height = rowsB;
 	Bm.width = colsB;
 	Bm.elements = B;
-	Bm.stride = sizeof(float);
+	Bm.stride = Bm.width;
 	Cm.height = rowsA;
 	Cm.width = colsB;
 	Cm.elements = C;
-	Cm.stride = sizeof(float);
+	Cm.stride = Cm.width;
 
 	MatMul(Am, Bm, Cm);
 
 	for (int i = 0; i < Cm.height; ++i){
 		for (int j = 0; j < Cm.width; ++j){
-			printf("%f ", Cm.elements[j * Cm.height + i]);
+			printf("%f ", Cm.elements[i * Cm.height + j]);
 		}
 		printf("\n");
 	}
@@ -96,6 +96,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	cudaMalloc(&d_A.elements, size);
 	cudaMemcpy(d_A.elements, A.elements, size,
 		cudaMemcpyHostToDevice);
+
 	Matrix d_B;
 	d_B.width = d_B.stride = B.width; d_B.height = B.height;
 	size = B.width * B.height * sizeof(float);

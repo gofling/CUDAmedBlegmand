@@ -125,15 +125,18 @@ void constantInit(float *data, int size, float val)
 /**
 * Run a simple test of matrix multiplication using CUDA
 */
-int matrixMultiply(int block_size, dim3 &dimsA, dim3 &dimsB)
+int matrixMultiply(int block_size, dim3 &dimsA, dim3 &dimsB, float *A, float *B)
 {
 	// Allocate host memory for matrices A and B
 	unsigned int size_A = dimsA.x * dimsA.y;
 	unsigned int mem_size_A = sizeof(float) * size_A;
-	float *h_A = (float *)malloc(mem_size_A);
+	//float *h_A = (float *)malloc(mem_size_A);
 	unsigned int size_B = dimsB.x * dimsB.y;
 	unsigned int mem_size_B = sizeof(float) * size_B;
-	float *h_B = (float *)malloc(mem_size_B);
+	//float *h_B = (float *)malloc(mem_size_B);
+	
+	float *h_A = A;
+	float *h_B = B;
 
 	// Initialize host memory
 	const float valB = 0.01f;
@@ -223,6 +226,14 @@ int matrixMultiply(int block_size, dim3 &dimsA, dim3 &dimsB)
 
 	// Copy result from device to host
 	error = cudaMemcpy(h_C, d_C, mem_size_C, cudaMemcpyDeviceToHost);
+
+	for (int i = 0; i < dimsC.x; ++i){
+		for (int j = 0; j < dimsC.y; ++j){
+			printf("%f ", A[j * dimsC.x + i]);
+		}
+		printf("\n");
+	}
+	printf("\n");
 
 	if (error != cudaSuccess)
 	{
@@ -340,6 +351,20 @@ int main(int argc, char **argv)
 	dim3 dimsA(5 * 2 * block_size, 5 * 2 * block_size, 1);
 	dim3 dimsB(5 * 4 * block_size, 5 * 2 * block_size, 1);
 
+	float A[16] = { 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4 };
+	float B[32] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8 };
+	int rowsA, colsA, rowsB, colsB;
+	rowsA = 4;
+	colsA = 4;
+	rowsB = 4;
+	colsB = 8;
+	//float *C = (float*)calloc(rowsA * colsB, sizeof(float));
+
+	dimsA.x = colsA;
+	dimsA.y = rowsA;
+	dimsB.x = colsB;
+	dimsB = rowsB;
+
 	/*// width of Matrix A
 	if (checkCmdLineFlag(argc, (const char **)argv, "wA"))
 	{
@@ -362,18 +387,18 @@ int main(int argc, char **argv)
 	if (checkCmdLineFlag(argc, (const char **)argv, "hB"))
 	{
 		dimsB.y = getCmdLineArgumentInt(argc, (const char **)argv, "hB");
-	}
+	}*/
 
 	if (dimsA.x != dimsB.y)
 	{
 		printf("Error: outer matrix dimensions must be equal. (%d != %d)\n",
 			dimsA.x, dimsB.y);
 		exit(EXIT_FAILURE);
-	}*/
+	}
 
 	printf("MatrixA(%d,%d), MatrixB(%d,%d)\n", dimsA.x, dimsA.y, dimsB.x, dimsB.y);
 
-	int matrix_result = matrixMultiply(block_size, dimsA, dimsB);
+	int matrix_result = matrixMultiply(block_size, dimsA, dimsB, A, B);
 
 	exit(matrix_result);
 }
