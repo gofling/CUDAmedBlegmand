@@ -1,145 +1,106 @@
+/**
+* Copyright 1993-2015 NVIDIA Corporation.  All rights reserved.
+*
+* Please refer to the NVIDIA end user license agreement (EULA) associated
+* with this source code for terms and conditions that govern your use of
+* this software. Any use, reproduction, disclosure, or distribution of
+* this software and related documentation outside the terms of the EULA
+* is strictly prohibited.
+*
+*/
+
+/**
+* Matrix multiplication: C = A * B.
+* Host code.
+*
+* This sample implements matrix multiplication as described in Chapter 3
+* of the programming guide.
+* It has been written for clarity of exposition to illustrate various CUDA
+* programming principles, not with the goal of providing the most
+* performant generic kernel for matrix multiplication.
+*
+* See also:
+* V. Volkov and J. Demmel, "Benchmarking GPUs to tune dense linear algebra,"
+* in Proc. 2008 ACM/IEEE Conf. on Supercomputing (SC '08),
+* Piscataway, NJ: IEEE Press, 2008, pp. Art. 31:1-11.
+*/
+
+// System includes
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
+
+// CUDA runtime
 #include <cuda_runtime.h>
 
-// Thread block size
-#define BLOCK_SIZE 16
-
-// Matrices are stored in row-major order:
-// M(row, col) = *(M.elements + row * M.stride + col)
-typedef struct {
-	int width;
-	int height;
-	int stride;
-	float* elements;
-} Matrix;
-
-void MatMul(const Matrix A, const Matrix B, Matrix C);
-// Get a matrix element
-__device__ float GetElement(const Matrix A, int row, int col)
+/**
+* Matrix multiplication (CUDA Kernel) on the device: C = A * B
+* wA is A's width and wB is B's width
+*/
+template <int BLOCK_SIZE> __global__ void
+matrixMulCUDA(float *C, float *A, float *B, int wA, int wB)
 {
-	return A.elements[row * A.stride + col];
-}
+	// Block index
+	int bx = blockIdx.x;
+	int by = blockIdx.y;
 
-// Set a matrix element
-__device__ void SetElement(Matrix A, int row, int col,
-	float value)
-{
-	A.elements[row * A.stride + col] = value;
-}
+	// Thread index
+	int tx = threadIdx.x;
+	int ty = threadIdx.y;
 
-// Get the BLOCK_SIZExBLOCK_SIZE sub-matrix Asub of A that is
-// located col sub-matrices to the right and row sub-matrices down
-// from the upper-left corner of A
-__device__ Matrix GetSubMatrix(Matrix A, int row, int col)
-{
-	Matrix Asub;
-	Asub.width = BLOCK_SIZE;
-	Asub.height = BLOCK_SIZE;
-	Asub.stride = A.stride;
-	Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row
-		+ BLOCK_SIZE * col];
-	return Asub;
-}
+	// Index of the first sub-matrix of A processed by the block
+	int aBegin = wA * BLOCK_SIZE * by;
 
-// Forward declaration of the matrix multiplication kernel
-__global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
+	// Index of the last sub-matrix of A processed by the block
+	int aEnd = aBegin + wA - 1;
 
-int main() {
-	Matrix A, B, C;
-	A.height = B.height = C.height = BLOCK_SIZE;
-	A.width = B.width = C.width = BLOCK_SIZE;
+	// Step size used to iterate through the sub-matrices of A
+	int aStep = BLOCK_SIZE;
 
-	MatMul(A, B, C);
+	// Index of the first sub-matrix of B processed by the block
+	int bBegin = BLOCK_SIZE * bx;
 
-	return 0;
-}
+	// Step size used to iterate through the sub-matrices of B
+	int bStep = BLOCK_SIZE * wB;
 
-// Matrix multiplication - Host code
-// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-void MatMul(const Matrix A, const Matrix B, Matrix C)
-{
-	// Load A and B to device memory
-	Matrix d_A;
-	d_A.width = d_A.stride = A.width; d_A.height = A.height;
-	size_t size = A.width * A.height * sizeof(float);
-	cudaMalloc(&d_A.elements, size);
-	cudaMemcpy(d_A.elements, A.elements, size,
-		cudaMemcpyHostToDevice);
-	Matrix d_B;
-	d_B.width = d_B.stride = B.width; d_B.height = B.height;
-	size = B.width * B.height * sizeof(float);
-	cudaMalloc(&d_B.elements, size);
-	cudaMemcpy(d_B.elements, B.elements, size,
-		cudaMemcpyHostToDevice);
+	// Csub is used to store the element of the block sub-matrix
+	// that is computed by the thread
+	float Csub = 0;
 
-	// Allocate C in device memory
-	Matrix d_C;
-	d_C.width = d_C.stride = C.width; d_C.height = C.height;
-	size = C.width * C.height * sizeof(float);
-	cudaMalloc(&d_C.elements, size);
+	// Loop over all the sub-matrices of A and B
+	// required to compute the block sub-matrix
+	for (int a = aBegin, b = bBegin;
+		a <= aEnd;
+		a += aStep, b += bStep)
+	{
 
-	// Invoke kernel
-	dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
-	dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
-	MatMulKernel << <dimGrid, dimBlock >> >(d_A, d_B, d_C);
-
-	// Read C from device memory
-	cudaMemcpy(C.elements, d_C.elements, size,
-		cudaMemcpyDeviceToHost);
-
-	// Free device memory
-	cudaFree(d_A.elements);
-	cudaFree(d_B.elements);
-	cudaFree(d_C.elements);
-}
-
-// Matrix multiplication kernel called by MatMul()
-__global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
-{
-	// Block row and column
-	int blockRow = blockIdx.y;
-	int blockCol = blockIdx.x;
-
-	// Each thread block computes one sub-matrix Csub of C
-	Matrix Csub = GetSubMatrix(C, blockRow, blockCol);
-
-	// Each thread computes one element of Csub
-	// by accumulating results into Cvalue
-	float Cvalue = 0;
-
-	// Thread row and column within Csub
-	int row = threadIdx.y;
-	int col = threadIdx.x;
-
-	// Loop over all the sub-matrices of A and B that are
-	// required to compute Csub
-	// Multiply each pair of sub-matrices together
-	// and accumulate the results
-	for (int m = 0; m < (A.width / BLOCK_SIZE); ++m) {
-
-		// Get sub-matrix Asub of A
-		Matrix Asub = GetSubMatrix(A, blockRow, m);
-
-		// Get sub-matrix Bsub of B
-		Matrix Bsub = GetSubMatrix(B, m, blockCol);
-
-		// Shared memory used to store Asub and Bsub respectively
+		// Declaration of the shared memory array As used to
+		// store the sub-matrix of A
 		__shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
+
+		// Declaration of the shared memory array Bs used to
+		// store the sub-matrix of B
 		__shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
 
-		// Load Asub and Bsub from device memory to shared memory
-		// Each thread loads one element of each sub-matrix
-		As[row][col] = GetElement(Asub, row, col);
-		Bs[row][col] = GetElement(Bsub, row, col);
+		// Load the matrices from device memory
+		// to shared memory; each thread loads
+		// one element of each matrix
+		As[ty][tx] = A[a + wA * ty + tx];
+		Bs[ty][tx] = B[b + wB * ty + tx];
 
-		// Synchronize to make sure the sub-matrices are loaded
-		// before starting the computation
+		// Synchronize to make sure the matrices are loaded
 		__syncthreads();
-		// Multiply Asub and Bsub together
-		for (int e = 0; e < BLOCK_SIZE; ++e)
-			Cvalue += As[row][e] * Bs[e][col];
+
+		// Multiply the two matrices together;
+		// each thread computes one element
+		// of the block sub-matrix
+#pragma unroll
+
+		for (int k = 0; k < BLOCK_SIZE; ++k)
+		{
+			Csub += As[ty][k] * Bs[k][tx];
+		}
 
 		// Synchronize to make sure that the preceding
 		// computation is done before loading two new
@@ -147,7 +108,272 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 		__syncthreads();
 	}
 
-	// Write Csub to device memory
-	// Each thread writes one element
-	SetElement(Csub, row, col, Cvalue);
+	// Write the block sub-matrix to device memory;
+	// each thread writes one element
+	int c = wB * BLOCK_SIZE * by + BLOCK_SIZE * bx;
+	C[c + wB * ty + tx] = Csub;
+}
+
+void constantInit(float *data, int size, float val)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		data[i] = val;
+	}
+}
+
+/**
+* Run a simple test of matrix multiplication using CUDA
+*/
+int matrixMultiply(int block_size, dim3 &dimsA, dim3 &dimsB)
+{
+	// Allocate host memory for matrices A and B
+	unsigned int size_A = dimsA.x * dimsA.y;
+	unsigned int mem_size_A = sizeof(float) * size_A;
+	float *h_A = (float *)malloc(mem_size_A);
+	unsigned int size_B = dimsB.x * dimsB.y;
+	unsigned int mem_size_B = sizeof(float) * size_B;
+	float *h_B = (float *)malloc(mem_size_B);
+
+	// Initialize host memory
+	const float valB = 0.01f;
+	constantInit(h_A, size_A, 1.0f);
+	constantInit(h_B, size_B, valB);
+
+	// Allocate device memory
+	float *d_A, *d_B, *d_C;
+
+	// Allocate host matrix C
+	dim3 dimsC(dimsB.x, dimsA.y, 1);
+	unsigned int mem_size_C = dimsC.x * dimsC.y * sizeof(float);
+	float *h_C = (float *)malloc(mem_size_C);
+
+	if (h_C == NULL)
+	{
+		fprintf(stderr, "Failed to allocate host matrix C!\n");
+		exit(EXIT_FAILURE);
+	}
+
+	cudaError_t error;
+
+	error = cudaMalloc((void **)&d_A, mem_size_A);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMalloc d_A returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	error = cudaMalloc((void **)&d_B, mem_size_B);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMalloc d_B returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	error = cudaMalloc((void **)&d_C, mem_size_C);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMalloc d_C returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	// copy host memory to device
+	error = cudaMemcpy(d_A, h_A, mem_size_A, cudaMemcpyHostToDevice);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMemcpy (d_A,h_A) returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	error = cudaMemcpy(d_B, h_B, mem_size_B, cudaMemcpyHostToDevice);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMemcpy (d_B,h_B) returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	// Setup execution parameters
+	dim3 threads(block_size, block_size);
+	dim3 grid(dimsB.x / threads.x, dimsA.y / threads.y);
+
+	// Create and start timer
+	printf("Computing result using CUDA Kernel...\n");
+
+	cudaDeviceSynchronize();
+
+	// Execute the kernel
+	int nIter = 300;
+
+	for (int j = 0; j < nIter; j++)
+	{
+		if (block_size == 16)
+		{
+			matrixMulCUDA<16> << < grid, threads >> >(d_C, d_A, d_B, dimsA.x, dimsB.x);
+		}
+		else
+		{
+			matrixMulCUDA<32> << < grid, threads >> >(d_C, d_A, d_B, dimsA.x, dimsB.x);
+		}
+	}
+
+	// Copy result from device to host
+	error = cudaMemcpy(h_C, d_C, mem_size_C, cudaMemcpyDeviceToHost);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaMemcpy (h_C,d_C) returned error code %d, line(%d)\n", error, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+
+	printf("Checking computed result for correctness: ");
+	bool correct = true;
+
+	// test relative error by the formula
+	//     |<x, y>_cpu - <x,y>_gpu|/<|x|, |y|>  < eps
+	double eps = 1.e-6; // machine zero
+
+	for (int i = 0; i < (int)(dimsC.x * dimsC.y); i++)
+	{
+		double abs_err = fabs(h_C[i] - (dimsA.x * valB));
+		double dot_length = dimsA.x;
+		double abs_val = fabs(h_C[i]);
+		double rel_err = abs_err / abs_val / dot_length;
+
+		if (rel_err > eps)
+		{
+			printf("Error! Matrix[%05d]=%.8f, ref=%.8f error term is > %E\n", i, h_C[i], dimsA.x*valB, eps);
+			correct = false;
+		}
+	}
+
+	printf("%s\n", correct ? "Result = PASS" : "Result = FAIL");
+
+	// Clean up memory
+	free(h_A);
+	free(h_B);
+	free(h_C);
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+
+	printf("\nNOTE: The CUDA Samples are not meant for performance measurements. Results may vary when GPU Boost is enabled.\n");
+
+	// cudaDeviceReset causes the driver to clean up all state. While
+	// not mandatory in normal operation, it is good practice.  It is also
+	// needed to ensure correct operation when the application is being
+	// profiled. Calling cudaDeviceReset causes all profile data to be
+	// flushed before the application exits
+	cudaDeviceReset();
+
+	if (correct)
+	{
+		return EXIT_SUCCESS;
+	}
+	else
+	{
+		return EXIT_FAILURE;
+	}
+}
+
+
+/**
+* Program main
+*/
+int main(int argc, char **argv)
+{
+	printf("[Matrix Multiply Using CUDA] - Starting...\n");
+
+	/*if (checkCmdLineFlag(argc, (const char **)argv, "help") ||
+		checkCmdLineFlag(argc, (const char **)argv, "?"))
+	{
+		printf("Usage -device=n (n >= 0 for deviceID)\n");
+		printf("      -wA=WidthA -hA=HeightA (Width x Height of Matrix A)\n");
+		printf("      -wB=WidthB -hB=HeightB (Width x Height of Matrix B)\n");
+		printf("  Note: Outer matrix dimensions of A & B matrices must be equal.\n");
+
+		exit(EXIT_SUCCESS);
+	}*/
+
+	// By default, we use device 0, otherwise we override the device ID based on what is provided at the command line
+	int devID = 0;
+
+	/*if (checkCmdLineFlag(argc, (const char **)argv, "device"))
+	{
+		devID = getCmdLineArgumentInt(argc, (const char **)argv, "device");
+		cudaSetDevice(devID);
+	}*/
+
+	cudaError_t error;
+	cudaDeviceProp deviceProp;
+	error = cudaGetDevice(&devID);
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaGetDevice returned error code %d, line(%d)\n", error, __LINE__);
+	}
+
+	error = cudaGetDeviceProperties(&deviceProp, devID);
+
+	if (deviceProp.computeMode == cudaComputeModeProhibited)
+	{
+		fprintf(stderr, "Error: device is running in <Compute Mode Prohibited>, no threads can use ::cudaSetDevice().\n");
+		exit(EXIT_SUCCESS);
+	}
+
+	if (error != cudaSuccess)
+	{
+		printf("cudaGetDeviceProperties returned error code %d, line(%d)\n", error, __LINE__);
+	}
+	else
+	{
+		printf("GPU Device %d: \"%s\" with compute capability %d.%d\n\n", devID, deviceProp.name, deviceProp.major, deviceProp.minor);
+	}
+
+	// Use a larger block size for Fermi and above
+	int block_size = (deviceProp.major < 2) ? 16 : 32;
+
+	dim3 dimsA(5 * 2 * block_size, 5 * 2 * block_size, 1);
+	dim3 dimsB(5 * 4 * block_size, 5 * 2 * block_size, 1);
+
+	/*// width of Matrix A
+	if (checkCmdLineFlag(argc, (const char **)argv, "wA"))
+	{
+		dimsA.x = getCmdLineArgumentInt(argc, (const char **)argv, "wA");
+	}
+
+	// height of Matrix A
+	if (checkCmdLineFlag(argc, (const char **)argv, "hA"))
+	{
+		dimsA.y = getCmdLineArgumentInt(argc, (const char **)argv, "hA");
+	}
+
+	// width of Matrix B
+	if (checkCmdLineFlag(argc, (const char **)argv, "wB"))
+	{
+		dimsB.x = getCmdLineArgumentInt(argc, (const char **)argv, "wB");
+	}
+
+	// height of Matrix B
+	if (checkCmdLineFlag(argc, (const char **)argv, "hB"))
+	{
+		dimsB.y = getCmdLineArgumentInt(argc, (const char **)argv, "hB");
+	}
+
+	if (dimsA.x != dimsB.y)
+	{
+		printf("Error: outer matrix dimensions must be equal. (%d != %d)\n",
+			dimsA.x, dimsB.y);
+		exit(EXIT_FAILURE);
+	}*/
+
+	printf("MatrixA(%d,%d), MatrixB(%d,%d)\n", dimsA.x, dimsA.y, dimsB.x, dimsB.y);
+
+	int matrix_result = matrixMultiply(block_size, dimsA, dimsB);
+
+	exit(matrix_result);
 }
